@@ -1,4 +1,4 @@
-package ToF_leikemappe;
+
 
 import java.awt.Container;
 import java.awt.Panel;

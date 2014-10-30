@@ -1,5 +1,7 @@
 package ToF_leikemappe;
 
+import oppgavesamling;
+
 public class ToF_leikeTest {
 
 	public static void main(String[] args) {
