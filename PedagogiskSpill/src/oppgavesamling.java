@@ -4,17 +4,17 @@
 import java.awt.Panel;
 import java.awt.Window;
 import java.util.Scanner;
-import javax.Math;
+import java.math.*;
 
 import javax.swing.JOptionPane;
 
 public class oppgavesamling {
 
 	private Scanner fil;
-	private oppgavetype_input oppgaver[]=new Oppgavetype_input();
+	private oppgavetype_input oppgaver[];
 	private Panel grensesnitt;
 	int spillerNummer;
-	int spillerNivaa;
+	int spillerNivaa=1;
 	int aktivoppgave;
 
 	//private int oppgaver_sorteringsliste[]; // Innheld sorteringsrekkefølga, produsert av metode sorter() Ser ikke at denne trengs
@@ -24,8 +24,8 @@ public class oppgavesamling {
 		/*
 		 * Konstruktøren
 		 */
-		 spillerNR=spillerNR;
-		 spillerNivaa=spiller.getNivaa(spillerNR);
+		
+		 //spillerNivaa=spiller.getNivaa(spillerNR);
 		super(); //hva er dette?
 		// Muligens redundant, kan sikker hente ut filnavnet frå this.fil, men tek med inntil vidare:
 		this.fil = fil; // Hentar inn "innlesteOppgaver.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
@@ -34,10 +34,11 @@ public class oppgavesamling {
 		/*
 		 * "Alfabetisk" bør helst velgast via lærar si innlegging, eller om lærar vil, være eit alternativ i oppgavesamling-grensesnittet.
 		 */
-		this.avgrensUtvalget(Math.Random(10));
+		this.avgrensUtvalget((int) Math.random()*10);
 		/*
 		 * Avgrensing bør være lagt inn av lærar, eller kunne velgast av spelar, akkurat som sortering.
 		 */
+
 	}
 
 	private void lesInnOppgaveObjekt() {
@@ -45,8 +46,8 @@ public class oppgavesamling {
 		while(this.fil.hasNext()){
 		 // instansier eit oppgave-objekt, i oppg-matrisen. Fôr objektet med data frå input-fila.
 			oppgaver[oppgaveTeller] = new oppgavetype_input(this.fil.next(), this.fil.next(), Integer.parseInt(this.fil.next()) );
-			//oppgavene skal abre legges til om nivået stemmer
-			if(this.spillerNivva==oppgaver[oppgaveteller].getNivaa)
+			//oppgavene skal bare legges til om nivået stemmer
+			//if(spillerNivaa==oppgaver[oppgaveTeller].getNivaa)
 				oppgaveTeller++;
 		}
 	}
@@ -92,16 +93,17 @@ public class oppgavesamling {
 		/*
 		 *
 		 */
-			oppgavenummer=0;
+			int oppgaveNummer=0;
 
 			Panel aktivtOppgavePanel = oppgaver[oppgaveNummer].visOppgave();
 			grensesnitt.add(aktivtOppgavePanel);
-			besvartbutton.addlistner();
-			if (besvart.change)
-				{
-					oppgaver[oppgavenummer].setbesvart=true;
-					if(svar==oppgaver[oppgavenummer].getSvar)
-						spiller.setpoeng=oppgave[oppgavenummer].getPoeng;
+			//besvartbutton.addlistner();
+			//if (besvart.change)
+				//{
+					//oppgaver[oppgaveNummer].setbesvart=true;
+					//if(svar==oppgaver[oppgaveNummer].getSvar)
+					//	spiller.setpoeng=oppgave[oppgaveNummer].getPoeng;
+					return aktivtOppgavePanel;
 				}
 
 				// vente, dette er muligens ikkje så smart.
@@ -110,7 +112,6 @@ public class oppgavesamling {
 
 // Fjernar panelet, så neste oppgåve kan visast
 			//grensesnitt.remove(aktivtOppgavePanel);
-}
 		//grensesnitt.add( visOppgaveSporsmaalet() ); // Vi legg til spørsmåldelen.
 		//grensesnitt.add( visOppgaveSvarInputPanel() ); // Og svardelen...
 		//grensesnitt.add( visSvarPaaOppgavePanel() ); // Og send-svar-delen.
