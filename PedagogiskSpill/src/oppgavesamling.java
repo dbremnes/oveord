@@ -5,10 +5,15 @@ import java.awt.Panel;
 import java.awt.Window;
 import java.util.Scanner;
 import java.math.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.IllegalStateException;
+import java.util.NoSuchElementException;
+
 
 import javax.swing.JOptionPane;
 
-public class oppgavesamling {
+public class Oppgavesamling {
 
 	private Scanner fil;
 	private oppgavetype_input oppgaver[];
@@ -20,15 +25,19 @@ public class oppgavesamling {
 	//private int oppgaver_sorteringsliste[]; // Innheld sorteringsrekkefølga, produsert av metode sorter() Ser ikke at denne trengs
 
 
-	public oppgavesamling(Scanner fil, String spillerNR) {
+	public Oppgavesamling(String filen, int spillerNR) {
 		/*
 		 * Konstruktøren
 		 */
-		
+
 		 //spillerNivaa=spiller.getNivaa(spillerNR);
-		super(); //hva er dette?
+		//super(); //hva er dette?
 		// Muligens redundant, kan sikker hente ut filnavnet frå this.fil, men tek med inntil vidare:
-		this.fil = fil; // Hentar inn "innlesteOppgaver.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
+		try
+		{
+		Scanner fil;
+        fil=new Scanner(new File(filen));
+		 // Hentar inn "innlesteOppgaver.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
 		this.lesInnOppgaveObjekt();  // Lag objekt på bakgrunn av fila
 		this.sorterOppgaver("alfabetisk");  // Sorter dei
 		/*
@@ -38,6 +47,12 @@ public class oppgavesamling {
 		/*
 		 * Avgrensing bør være lagt inn av lærar, eller kunne velgast av spelar, akkurat som sortering.
 		 */
+		 } // end try
+		 	catch ( FileNotFoundException fileNotFoundException )
+		 		{
+		 			JOptionPane.showMessageDialog(null,  "Feil ved åpning av fila.", null, JOptionPane.PLAIN_MESSAGE );
+		 			return;
+		} // end catch
 
 	}
 
