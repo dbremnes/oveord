@@ -13,7 +13,7 @@ public class Hovedvindu extends JFrame implements ActionListener  //deklarerer d
 
     public Hovedvindu()  		//konstrukt?r uten parametre
     {
-        super("Øveord");//super gj?r at denne subklassens konstrukt?r arver egenskapene til java-klassen Object.
+//        super("Øveord");//super gj?r at denne subklassens konstrukt?r arver egenskapene til java-klassen Object.
 
         kurs = new JButton("Kurs"+ "\n"); 		//oppretter knappene Kurs, Student, Oversikt og Avslutt
         kurs.addActionListener(this);
