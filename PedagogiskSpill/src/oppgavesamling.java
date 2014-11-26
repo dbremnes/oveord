@@ -16,16 +16,17 @@ import javax.swing.JOptionPane;
 public class Oppgavesamling {
 
 	private Scanner fil;
-	private oppgavetype_input oppgaver[];
+	private Oppgavetype_input oppgaver[];
 	private Panel grensesnitt;
 	int spillerNummer;
 	int spillerNivaa=1;
 	int aktivoppgave;
+	private static int oppgaveTeller=0;
 
 	//private int oppgaver_sorteringsliste[]; // Innheld sorteringsrekkefølga, produsert av metode sorter() Ser ikke at denne trengs
 
 
-	public Oppgavesamling(String filen, int spillerNR) {
+	public Oppgavesamling(String filen, int spillerNR, Hovedvindu vindu) {
 		/*
 		 * Konstruktøren
 		 */
@@ -33,17 +34,21 @@ public class Oppgavesamling {
 		 //spillerNivaa=spiller.getNivaa(spillerNR);
 		//super(); //hva er dette?
 		// Muligens redundant, kan sikker hente ut filnavnet frå this.fil, men tek med inntil vidare:
+
+
 		try
 		{
 		Scanner fil;
         fil=new Scanner(new File(filen));
+
 		 // Hentar inn "innlesteOppgaver.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
-		this.lesInnOppgaveObjekt();  // Lag objekt på bakgrunn av fila
-		this.sorterOppgaver("alfabetisk");  // Sorter dei
+
+		lesInnOppgaveObjekt(oppgaveTeller);  // Lag objekt på bakgrunn av fila
+		sorterOppgaver("alfabetisk");  // Sorter dei
 		/*
 		 * "Alfabetisk" bør helst velgast via lærar si innlegging, eller om lærar vil, være eit alternativ i oppgavesamling-grensesnittet.
 		 */
-		this.avgrensUtvalget((int) Math.random()*10);
+		avgrensUtvalget((int) Math.random()*10);
 		/*
 		 * Avgrensing bør være lagt inn av lærar, eller kunne velgast av spelar, akkurat som sortering.
 		 */
@@ -56,14 +61,17 @@ public class Oppgavesamling {
 
 	}
 
-	private void lesInnOppgaveObjekt() {
-		int oppgaveTeller=0;
-		while(this.fil.hasNext()){
+	private void lesInnOppgaveObjekt(int teller) {
+		while(fil.hasNext()){
+		//JOptionPane.showMessageDialog(null, "har vi noe info?"+fil.next());
 		 // instansier eit oppgave-objekt, i oppg-matrisen. Fôr objektet med data frå input-fila.
-			oppgaver[oppgaveTeller] = new oppgavetype_input(this.fil.next(), this.fil.next(), Integer.parseInt(this.fil.next()) );
+		 String norskOrd=fil.next();
+		 String engelskOrd=fil.next();
+		 int nivaaet=Integer.parseInt(fil.next());
+			oppgaver[teller] = new Oppgavetype_input(norskOrd,engelskOrd,nivaaet);
 			//oppgavene skal bare legges til om nivået stemmer
 			//if(spillerNivaa==oppgaver[oppgaveTeller].getNivaa)
-				oppgaveTeller++;
+				teller++;
 		}
 	}
 
@@ -102,32 +110,66 @@ public class Oppgavesamling {
 				oppgaver[i]=null;
 			}
 		}
-	}
+
+	public void actionPerformed(ActionEvent e)  //Ved trykk kalles metodene opp.
+	    {
+	    if (e.getSource() == besvart)
+	        visSvarPaaOppgavePanel();
+
+    }
 
 	public Panel visOppgave(){
 		/*
 		 *
 		 */
+		 	besvart = new JButton("besvart\t\t");
+        	besvart.addActionListener(this);
 			int oppgaveNummer=0;
 
 			Panel aktivtOppgavePanel = oppgaver[oppgaveNummer].visOppgave();
 			grensesnitt.add(aktivtOppgavePanel);
-			//besvartbutton.addlistner();
-			//if (besvart.change)
-				//{
-					//oppgaver[oppgaveNummer].setbesvart=true;
-					//if(svar==oppgaver[oppgaveNummer].getSvar)
-					//	spiller.setpoeng=oppgave[oppgaveNummer].getPoeng;
-					return aktivtOppgavePanel;
-				}
+			grensesnitt.add(besvart)
+
+
 
 				// vente, dette er muligens ikkje så smart.
 				// Bør nok bytte dette ut med eventlistener
-			}
+
 
 // Fjernar panelet, så neste oppgåve kan visast
-			//grensesnitt.remove(aktivtOppgavePanel);
-		//grensesnitt.add( visOppgaveSporsmaalet() ); // Vi legg til spørsmåldelen.
-		//grensesnitt.add( visOppgaveSvarInputPanel() ); // Og svardelen...
-		//grensesnitt.add( visSvarPaaOppgavePanel() ); // Og send-svar-delen.
-		//return grensesnitt;
+			grensesnitt.remove(aktivtOppgavePanel);
+		grensesnitt.add( visOppgaveSporsmaalet() ); // Vi legg til spørsmåldelen.
+		grensesnitt.add( visOppgaveSvarInputPanel() ); // Og svardelen...
+		grensesnitt.add( visSvarPaaOppgavePanel() ); // Og send-svar-delen.
+		return grensesnitt;
+	}
+public void visOppgaveSporsmaalet ()
+{
+	oppgave = new JTextField (12);
+	        oppgave.setSize( 300, 300 ); 	//kaller p? metoden setSize og setter st?rrelsen p? vinduet.
+        oppgave.addActionListener(this);
+        oppgave.add(oppgaver[oppgaveNummer]);
+
+	}
+
+	public void visOppgaveInputPanel()
+	{
+		 svar = new JTextField (12);
+		svar.setSize( 300, 300 ); 	//kaller p? metoden setSize og setter st?rrelsen p? vinduet.
+        svar.addActionListener(this);
+	}
+
+	private void visSvarPaaOppgavePanel()
+	{
+
+
+							oppgaver[oppgaveNummer].setbesvart=true;
+							if(svar==oppgaver[oppgaveNummer].getSvar)
+							{
+								spiller.setpoeng+=oppgave[oppgaveNummer].getPoeng;
+								oppgaveNummer++;
+								visOppgave();
+								return aktivtOppgavePanel;
+							}
+						}
+
