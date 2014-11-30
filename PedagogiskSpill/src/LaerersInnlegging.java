@@ -53,10 +53,7 @@ public class LaerersInnlegging {
 		Formatter output = null; 
 		try
 		{
-			
-		
-			    //exception handling left as an exercise for the reader
-			
+		    //exception handling left as an exercise for the reader		
 			FileWriter fileWriter = new FileWriter("laerersord.txt", true); 
 			output = new Formatter (fileWriter);//Âpner fila kunder.txt for skriving, hvis den ikke finnes, opprettes den
 		}
@@ -80,9 +77,9 @@ public class LaerersInnlegging {
 	
 		for (Innlegg detteInnlegget : minListe){
 			
-			System.out.println(detteInnlegget.norskOrd);
-			System.out.println(detteInnlegget.engelskOrd);
-			System.out.println(detteInnlegget.nivaa);
+			System.out.println(detteInnlegget.getNorskOrd());
+			System.out.println(detteInnlegget.getEngelskOrd());
+			System.out.println(detteInnlegget.getNivaa());
 			output.format("%s %s %d\n", detteInnlegget.getNorskOrd(), detteInnlegget.getEngelskOrd(), detteInnlegget.getNivaa());
 
 			

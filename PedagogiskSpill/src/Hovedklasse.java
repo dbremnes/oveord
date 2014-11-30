@@ -14,12 +14,12 @@ public class Hovedklasse extends JFrame
         valgt=(String)JOptionPane.showInputDialog(null, "Velg rolle", "Elev eller lærer?", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
         
         if (valgt.equals("Elev")){
-        	Hovedvindu vindu = new Hovedvindu();
+        	Hovedklasse vindu = new Hovedklasse();
             vindu.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
             vindu.setSize(1000, 800);
-            vindu.setVisible(true);
             Oppgavesamling oppgavesamlingen;
-            oppgavesamlingen = new Oppgavesamling(fil,1);
+            oppgavesamlingen = new Oppgavesamling(fil,1, vindu);
+            vindu.setVisible(true);
         }
         else {
         	LaerersInnlegging laerer=new LaerersInnlegging();
