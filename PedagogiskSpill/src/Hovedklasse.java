@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /* */    
@@ -61,12 +63,30 @@ public class Hovedklasse extends JFrame {
 		//Variabler
 		String filNavn = "elever.txt";
 		String line;
-		ArrayList elevlisten = new ArrayList();
+		int teller=0;
+		String elevlisten[] = new String[100];
+		try {
+	        this.fil=new Scanner(new File(filNavn));
+			 // Hentar inn "innlesteOppgaver.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
+		 } // end try
+	 	catch ( FileNotFoundException fileNotFoundException ){
+				lagFil();
+	 			//JOptionPane.showMessageDialog(null,  "Feil ved åpning av fila.", null, JOptionPane.PLAIN_MESSAGE );
+	 			return;
+		} // end catch
+		
+		while(this.fil.hasNext()){
+			 // instansier eit oppgave-objekt, i oppg-matrisen. Får objektet med data frå input-fila.
+				int nivaa = Integer.parseInt(this.fil.next());
+				String fornavn = this.fil.next();
+				String etternavn = this.fil.next();
+				elevlisten[teller] = fornavn + " " + etternavn + " " + nivaa;
+			}
+			//variabler for kontroll av andel korrekte svar
 	    
 		//Opprette nedtrekksliste fra filen elever.txt
-		String [] verdier = filNavn /*<putte inn elever.txt som parameter i arraylisten verdier>*/;
-	    String elevNavn;
-	    elevNavn = (String)JOptionPane.showInputDialog(null, "Elevliste", "Velg navnet ditt", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
+	    int elevNummer;
+	    elevNummer = JOptionPane.showInputDialog(null, "Elevliste", "Velg navnet ditt", JOptionPane.INFORMATION_MESSAGE, null, elevlisten, elevlisten[0] );
 		
 	    //variabel "elevnavn" knyttes opp mot spilleren - hvor putter jeg inn elevNavn-parameteren?
     	int nivaa = 1;
