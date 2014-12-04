@@ -34,6 +34,8 @@ public class Oppgavesamling {
 	private int antallOppgaver;
 	private int antallRiktigeSvar;
 	private Spilleren spiller;
+	private String riktigBesvart="Riktig besvart oppgaver er: ";
+	private String feilBesvart="Feil besvarte oppgaver er ";
 
 	//private int oppgaver_sorteringsliste[]; // Innheld sorteringsrekkefølga, produsert av metode sorter() Ser ikke at denne trengs
 
@@ -51,16 +53,11 @@ public class Oppgavesamling {
 	        this.oppgaver = new OppgavetypeInput[100];
 	        this.lesInnOppgaveObjekt();  // Lag objekt på bakgrunn av fila
 			this.sorterOppgaver("alfabetisk");  // Sorter dei
-			
-			 // "Alfabetisk" bør helst velgast via lærar si innlegging, eller om lærar vil, være eit alternativ i oppgavesamling-grensesnittet.
-			 
-			// this.avgrensUtvalget((int) Math.random()*10);
-			/*
-			 * Avgrensing bør være lagt inn av lærar, eller kunne velgast av spelar, akkurat som sortering.
-			 */
+
+
 		 } // end try
 	 	catch ( FileNotFoundException fileNotFoundException ){
-				lagFil(filNavn);
+				lagFil(filNavn,"");
 	 			JOptionPane.showMessageDialog(null,  "Feil ved åpning av fila.", null, JOptionPane.PLAIN_MESSAGE );
 	 			return;
 		} // end catch
@@ -76,7 +73,7 @@ public class Oppgavesamling {
 			String oppgaveOrd = this.fil.next();
 			String oppgaveFasit = this.fil.next();
 			int nivaa = Integer.parseInt(this.fil.next());
-			//oppgavene skal bare legges til om nivået stemmer	
+			//oppgavene skal bare legges til om nivået stemmer
 			if(this.spiller.getNivaa()==nivaa){
 				// This er lagt til, fordi oppgåva skal kunne trigge "neste oppgåve" her i oppgåvesamlinga.
 				this.oppgaver[oppgaveTeller] = new OppgavetypeInput(oppgaveOrd,oppgaveFasit,nivaa,this);
@@ -106,22 +103,10 @@ public class Oppgavesamling {
 					oppgaver[k]=oppgaver[this.oppgaver.length];
 				}
 				aktivOppgaveNR=0;
-				//break;
-			//case 	"alfabetisk":
-				// Sorter elementa i array alfabetisk.
-				//break;
-			//default:
-				// Sorter elementa slik dei vart skrive inn av læraren, altså etter key i oppgave-arrayen.
+
+
 		}
-	//Skal dette fjernes med basis i at vi nå kun viser oppgaver på et bestemt nivå?
-	//private void avgrensUtvalget(int antall){
-		// kutt arrayen etter "antall" element, altså skal vi ikkje nødvendigvis vise alle oppgaver fra tekstfila
-		//if (antall>this.oppgaver.length){
-			//for (int i=antall; i==this.oppgaver.length-1; i++){
-			//	oppgaver[i]=null;
-			//}
-		//}
-	//}
+
 
 	public void visAktivOppgave(){
 		/*
@@ -137,7 +122,7 @@ public class Oppgavesamling {
 		if(this.aktivOppgaveNR==this.antallOppgaver-1){
 			this.antallRiktigeSvar=0;
 			for(int i=1;i>this.oppgaver.length;i++){
-				if(this.oppgaver[i].getRiktigBesvart()) this.antallRiktigeSvar++; 
+				if(this.oppgaver[i].getRiktigBesvart()) this.antallRiktigeSvar++;
 			}
 			//finner prosentandel riktige svar
 			double andel=this.antallRiktigeSvar/antallOppgaver;
@@ -146,21 +131,33 @@ public class Oppgavesamling {
 				int nyttNivaa = this.spiller.nivaaOpp();
 				//hva skal skje i tillegg?
 				//noe kult må skje
-				//dreper de gamle oppgavene
-				for(int i=0; i<antallOppgaver;i++){
-					this.oppgaver[i]=null;
-				}//end for
+
 				//sjekk om alt er riktig
 				if(andel==1){
 					//noe ekstra kult skal skje
 				}//end if
 
 			}
-			// Kva skal skje når spelet er over. 
+			// Kva skal skje når spelet er over.
 			JOptionPane.showMessageDialog(null, "", "Takk for alt!", JOptionPane.PLAIN_MESSAGE );
-			
+
 			// Køyre metode for å loope gjennom oppgavene og skriv ut i resultat-fil .
-			
+			for (int i=0; i<this.oppgaver.length; i++)
+			{
+				if (this.oppgaver[i].getRiktigBesvart()){
+					antallRiktigeSvar++;
+					riktigBesvart+=this.oppgaver[i].getOppgaveOrd();
+				}else{
+					feilBesvart+=this.oppgaver[i].getOppgaveOrd()+" "+this.oppgaver[i].getElevensSvar();
+				}
+			}
+				String filnavnet=this.spiller.getNavn()+".txt";
+				riktigBesvart+="antall riktig besvarte oppgaver er "+antallRiktigeSvar+"\n";
+				String skrivInformasjon=riktigBesvart+"\n"+feilBesvart;
+				lagFil(filnavnet,skrivInformasjon);
+				JOptionPane.showMessageDialog(null, "", filnavnet, JOptionPane.PLAIN_MESSAGE );
+
+
 			vindu.dispose();
 	}else{
 		//henter frem oppgavene igjen
@@ -171,7 +168,7 @@ public class Oppgavesamling {
 	}
 }
 
-	public static void lagFil(String filNavn)
+	public static void lagFil(String filNavn,String innhold)
 	{
 			Formatter output = null;
 			try
@@ -196,12 +193,9 @@ public class Oppgavesamling {
 			}
 
 
-			// sopprett filen
+			// opprett filen
+			output.format("%s", innhold);
 
-			System.out.println("");
-			System.out.println("");
-			System.out.println(0);
-			output.format("%s %s %d\n", "ny", "new", 0);
 
 			if ( output != null)
 				output.close();
@@ -223,7 +217,7 @@ public class Oppgavesamling {
 	public void setAktivOppgaveNR(int aktivOppgaveNR) {
 		this.aktivOppgaveNR = aktivOppgaveNR;
 	}
-	
+
 }
 /*
  *
