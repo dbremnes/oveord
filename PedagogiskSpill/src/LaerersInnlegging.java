@@ -34,7 +34,8 @@ public class LaerersInnlegging {
 	
 		
 		while (true){
-			int elevTellerer++; 
+			int elevTellerer=0;
+			elevTellerer++;  
 			//Gir variablene verdier med inputdialoger fra klassen JOptionPane
 			Fornavn = JOptionPane.showInputDialog(null, "Skriv inn fornavnet til elev "+elevTellerer, "Fornavn", JOptionPane.PLAIN_MESSAGE);
 			Etternavn = JOptionPane.showInputDialog(null, "Skriv inn etternavn til elev "+elevTellerer, "Etternavn", JOptionPane.PLAIN_MESSAGE);
