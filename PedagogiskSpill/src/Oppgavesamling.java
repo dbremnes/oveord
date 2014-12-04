@@ -1,5 +1,16 @@
 //Oppgavesamling
-/* Denne klassa skal instansiere fleire objekt av typen â€œoppgaveâ€?, alts� eit sett med oppg�ver (eller ei samling om du vil). Desse kan s� testast og vil etterkvart innehalde sine poengsummar. Denne klassa vil dermed kunne innehalde aggregert poengsum og kommunisere med brukar-objektet om � oppgradere level, tilføre nye poeng (prosentar kanskje?)  */
+/* Oppgavesamling er et objekt med følgende funksjoner:
+Den oppretter en array med objekter basert på oppgavetypeInput og innlesing fra fil
+Den kontrollerer aktiv spiller med informasjon og hvilken oppgave som skal vises
+Den kontrollerer hvilke oppgaver som skal vises til en hver tid og hvilke som skal være tilgjengelig. Tilgjenligheten baserer seg på oppgavenes vanskelighetsgrad og elevens nivå
+Den kontrollerer om det er flere tilgjengelige oppgaver i arrayen og viser eventuelt disse for elevene
+Dersom alle oppgaver er forsøkt løst kontrollerer den om elevene skal øke i nivå basert på prestasjonen og oppdaterer i tilfelle elevobjektet
+Den lagrer informasjon om elevens prestasjoner innenfor et oppgave nivå, slik at læreren i etterkant kan se resultatene */
+
+/*Importerer nødvendige klasser for å kunne utføre
+lesing fra fil, med feil behandlig
+skriving til fil, med feilbehandling
+tilfeldig behandling*/
 
 import java.awt.Panel;
 import java.awt.Window;
@@ -18,17 +29,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Formatter;
+import javax.swing.JOptionPane;
 
 
 
 import javax.swing.JOptionPane;
 
 public class Oppgavesamling {
-
+	/*Defenisjon av objektet med variabler tilgjengelig i hele objektet*/
 	private Scanner fil;
 	private OppgavetypeInput[] oppgaver;
 	private Panel grensesnitt;
-	//private int spillerNivaa;
 	private int aktivOppgaveNR;
 	private Hovedklasse vindu;
 	private int antallOppgaver;
@@ -37,104 +48,165 @@ public class Oppgavesamling {
 	private String riktigBesvart="";
 	private String feilBesvart="";
 
-	//private int oppgaver_sorteringsliste[]; // Innheld sorteringsrekkefølga, produsert av metode sorter() Ser ikke at denne trengs
+
 
 	public Oppgavesamling(String filNavn, Hovedklasse vindu) {
-		// Konstruktøren
+		/*Konstruktør hvor filnavn og aktivt vindu sendes inn
+		Basert på innsendt informasjon settes det opp en peker til det aktive vinduet og den aktive spilleren (peker betyr at den viser til)
+			this.vindu=vindu
+			this.spiller=vindu.spiller
+		Videre brukes informasjon om spilleren til å kontrollere hvilke oppgaver som skal aktiveres av de læreren har skrevet inn. Utvalget gjøres i samsvar
+			Prøver å sette opp scanneren (filleseren) med riktig filnavn ut fra tilgjengelig informasjon
+			Oppretter en array med 100 plasser av typen oppgavinputType
+			kaller opp metoden for innlesing av fil og opprettelse av det enkelte oppgave objektet
+			Kaller opp metoden for at oppgavene skal komme i tilfeldig rekkefølge med informasjon om metode
 
-		this.vindu = vindu; // Sett peikaren fr� konstruktør-parameteret til klassevariabel.
+			fanger opp informasjonen om filen ikke eksisterer og oppretter en ny fil via metoden lagfil*/
+
+
+		this.vindu = vindu; // Sett peikaren frå konstruktÃ¸r-parameteret til klassevariabel.
 		this.spiller=vindu.spiller; // lag peikar til spiller-objektet fra hovudvinduet
-		//spillerNivaa=spilleren.getNivaa();
-		//DEBUG: JOptionPane.showMessageDialog(null,  "Niv�:"+this.spiller.getNivaa(), null, JOptionPane.PLAIN_MESSAGE );
 
+		//prøver lesning av fil
 		try {
+			//oppretter fil scanneren, basert på innsendt filnavn
 	        this.fil=new Scanner(new File(filNavn));
-			 // Hentar inn "laerersord.txt" (el.l.), som Kristina produserer i sin klasse, dette m� vel utvides og endres med varierende oppgaver
+			 // Hentar inn "laerersord.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
+			 //Oppretter en array med 100 plasser. Ideelt sett skulle antall plasser basert seg på antall oppgaver som eksisterer i filen
 	        this.oppgaver = new OppgavetypeInput[100];
-	        this.lesInnOppgaveObjekt();  // Lag objekt p� bakgrunn av fila
-			this.sorterOppgaver("alfabetisk");  // Sorter dei
+	        this.lesInnOppgaveObjekt();  //Metode for å lage objekter basert på oppgavene i filen
+			this.sorterOppgaver("alfabetisk");  // Sorter objektene i tilfeldig rekkefølge
 
 
 		 } // end try
+		 //Fanger opp eventuelle feil ved lesning av filen
 	 	catch ( FileNotFoundException fileNotFoundException ){
-				lagFil(filNavn,"");
-	 			JOptionPane.showMessageDialog(null,  "Feil ved �pning av fila.", null, JOptionPane.PLAIN_MESSAGE );
+				lagFil(filNavn,""); //kaller funksjonen for å lage fil, slik at programmet ikke stopper
+	 			JOptionPane.showMessageDialog(null,  "Feil ved åpning av fila.", null, JOptionPane.PLAIN_MESSAGE );//Gir tilbakemeldingom feilen
 	 			return;
 		} // end catch
+		//sikrer at aktiv Oppgave starter på 0
 		this.aktivOppgaveNR=0;
+		//kaller metoden visAktivOppgave
 		this.visAktivOppgave();
 
 	}
 
 	private void lesInnOppgaveObjekt() {
+		/*Metode les inn oppgaveObjekt ()
+		løkke som går så lenge flere elementer kan leses fra fil (while løkke)
+		henter inn norskord, engelskord og nivå fra filen
+		Hvis elevens nivå er likt oppgave nivå
+		Oppretter objekt via oppgavetype arrayen og kontruktøren der basert på innlest info
+		teller opp slik at oppgavene legges nedover arrayen (øker teller med en)
+		Tar vare på antall innleste oppgaver, slik at denne kan styre gjennomlesning av arrayen senere*/
+		//lokal variabel
 		int oppgaveTeller=0;
+		//Løkke som går så lenge det er flere oppgaver i filen
 		while(this.fil.hasNext()){
-		 // instansier eit oppgave-objekt, i oppg-matrisen. F�r objektet med data fr� input-fila.
+		 // instansier eit oppgave-objekt, i oppg-matrisen. Får objektet med data frå input-fila.
+		 //leser inn oppgaveordet
 			String oppgaveOrd = this.fil.next();
+			//Leser inn fasiten
 			String oppgaveFasit = this.fil.next();
+			//leser inn nivået på oppgaven
 			int nivaa = Integer.parseInt(this.fil.next());
-			//oppgavene skal bare legges til om niv�et stemmer
+			//oppgavene skal bare legges til om nivået stemmer
 			if(this.spiller.getNivaa()==nivaa){
-				// This er lagt til, fordi oppg�va skal kunne trigge "neste oppg�ve" her i oppg�vesamlinga.
+				// This er lagt til, fordi oppgåva skal kunne trigge "neste oppgåve" her i oppgåvesamlinga.
+				//Oppretter objektet basert på den innhentede informasjonen fra filen.Legger oppgavene i arrayen slik at de blir objekter
 				this.oppgaver[oppgaveTeller] = new OppgavetypeInput(oppgaveOrd,oppgaveFasit,nivaa,this);
+				//øker telelr emd en slik at neste oppgave legges etter i arrayen
 				oppgaveTeller++;
 			}
 		}
-		//variabler for kontroll av andel korrekte svar
+		//variabler for kontroll av antall oppgaver
 		this.antallOppgaver= oppgaveTeller-1;
+
+
 	}
 
 	private void sorterOppgaver(String type)
 	{
-		/*
-		 * Endar med at arrayen oppgaver_sorteringsliste har ID'en til oppgave-objekta, "riktig" sortert inni seg (alfabetisk eller...)
-		 */
+		/*Metode sortering (hvordan sortere)
+		Sorterer kun tilfeldig innenfor arrayen
+		Bruker en tilfeldig funksjon for å endre plasseringen
+		Bytter om plasseringen via en midlertidig variabel, gjøres via en løkke med to tellere
+		*/
+
+		//Lokale variabler brukes kun til sorteringen
 		 int k;
 		 int j;
-		//switch(type){
-			//case	"random":
 
-				for(int i=1;i>this.oppgaver.length;i++)
+				//
+				for(int i=0;i<this.antallOppgaver; i++)
 				{
 					// Loop og lag ei tilfeldig liste
-					k = (int) Math.random()*this.oppgaver.length;
-					oppgaver[this.oppgaver.length]=this.oppgaver[i];
+					//tilfeldig tall basert på lengden av oppgavene
+					k = (int) Math.random()*this.antallOppgaver;
+					//
+					oppgaver[this.antallOppgaver]=this.oppgaver[i];
 					oppgaver[i]=oppgaver[k];
-					oppgaver[k]=oppgaver[this.oppgaver.length];
+					oppgaver[k]=oppgaver[antallOppgaver];
 				}
-				aktivOppgaveNR=0;
+				//nullstiller den aktive oppgaven
+				this.aktivOppgaveNR=0;
 		}
 
 	public void visAktivOppgave(){
-		/*
-		 *  Viser oppgava som skal vere aktiv.
-		 */
+		/*Metode visAktivOppgave()
+		Sender den aktiveOppgaven til oppgaveType objektet for visning
+		setter fokus i vnduet
+		*/
+		//legger ut den første oppgaven fra den sorterte listen
 		this.vindu.setContentPane( oppgaver[this.aktivOppgaveNR].visOppgave() );
 		this.vindu.validate();
 	}
 
 	public void nesteOppgave(){
-		// Denne vert trigga av oppgave-objektet, n�r neste oppg�ve skal visast.
-		//sjekker om alle oppgaver p� niv�et er løst
-		if(this.aktivOppgaveNR==this.antallOppgaver){
+		/*Metode nesteOppgave()
+		Denne metoden holder styring på om dette finnes flere oppgaver å vise
+		Viser neste oppgave om mulig
+		Når alle er vist sjekkes det hvor mange rett eleven har
+		Samler hvilke feil eleven har gjort
+		Lagrer informasjonen ved å kalle opp lagreFil metoden
+		Bygger opp en string for filnavn basert på elevens navn og nivå
+
+			Samlingen av informasjonen skjer i en for løkke like lans som antallOppgaver
+			Sjekker om oppgaven er riktig besvart, og øker i tilfelle antallRikitge med en og legger oppgaven inn i stringen riktigBesvart
+			Er oppgaven ikke riktig besvart bygges stringen feilSvart opp med oppgaven og elevens svar
+
+			Legger det hele sammen til en string og lager filnavnStringen
+			Sender informasjonen til Lagfil med filnavn og stringen med innholdet
+		*/
+
+
+		//sjekker om alle oppgaver på nivået er løst
+		if(this.aktivOppgaveNR==this.antallOppgaver-1){
+			//nullstiller antall riktige oppgaver
 			this.antallRiktigeSvar=0;
+			//løkke som går så lenge der er flere oppgaver i arrayen oppgaver
 			for(int i=0; i<this.antallOppgaver; i++){
+				//sjekker om oppgavene er riktig besvart
 				if (this.oppgaver[i].getRiktigBesvart()){
+					//øker antallRiktige med 1
 					antallRiktigeSvar++;
+					//Bygger opp stringen med riktig besvarte oppgaver
 					riktigBesvart+=this.oppgaver[i].getOppgaveOrd();
-					JOptionPane.showMessageDialog(null, "Riktig:"+riktigBesvart, "", JOptionPane.PLAIN_MESSAGE );
+					//feil besvarte oppgaver behandles her
 				}else{
+					//bygger opp stringen knyttet til feilbesvarte oppgaver
 					feilBesvart+=this.oppgaver[i].getOppgaveOrd()+" "+this.oppgaver[i].getElevensSvar();
-					JOptionPane.showMessageDialog(null, "Feil: "+feilBesvart, "", JOptionPane.PLAIN_MESSAGE );					
+
 				}
 			}
 			//finner prosentandel riktige svar
 			double andel=this.antallRiktigeSvar/antallOppgaver;
-			//endrer niv�et og oppgave utvalg om niv�et er over 80%
+			//endrer nivået og oppgave utvalg om nivået er over 80%
 			if (andel>0.8){
 				int nyttNivaa = this.spiller.nivaaOpp();
 				//hva skal skje i tillegg?
-				//noe kult m� skje
+				//noe kult må skje
 				//sjekk om alt er riktig
 				if(andel==1){
 					//noe EKSTRA kult skal skje, vedkomande har full pott.
@@ -142,25 +214,26 @@ public class Oppgavesamling {
 			}
 
 			/*
-			 * Skriv resultatet til fil, p� m�nsteret Resultat_Nivaa_Elevens_Navn.txt
+			 * Skriv resultatet til fil, på mønsteret Resultat_Nivaa_Elevens_Navn.txt
 			 */
 				String filnavnet= "Resultat_"+Integer.toString(this.spiller.getNivaa())+"_"+this.spiller.getFornavn()+"_"+this.spiller.getEtternavn()+".txt";
-				// Lag klar string til fila, alts� innhaldet. 
-				String filInnholdet = "Antall riktige svar: "+antallRiktigeSvar+"\n";			
+				// Lag klar string til fila, altså innhaldet.
+				//Bygger opp stringen
+				String filInnholdet = "Antall riktige svar: "+antallRiktigeSvar+"\n";
 				filInnholdet += "Riktig besvart oppgaver er: "+riktigBesvart+"\n";
 				filInnholdet += "Feil besvarte oppgaver er:"+feilBesvart+"\n";
 				lagFil(filnavnet,filInnholdet);
-				
-				JOptionPane.showMessageDialog(null, filnavnet, "", JOptionPane.PLAIN_MESSAGE );
 
-				// Kva skal skje n�r spelet er over.
-				JOptionPane.showMessageDialog(null, "Takk for n�, velkommen igjen!", "Takk!", JOptionPane.PLAIN_MESSAGE );
+
+
+				// Kva skal skje når spelet er over.
+				JOptionPane.showMessageDialog(null, "Takk for nå, velkommen igjen!", "Takk!", JOptionPane.PLAIN_MESSAGE );
 
 			vindu.dispose();
 	}else{
 		//henter frem oppgavene igjen
-			// this.lesInnOppgaveObjekt();
-			// this.sorterOppgaver("alfabetisk");
+			 //this.lesInnOppgaveObjekt();
+			 //this.sorterOppgaver("alfabetisk");
 			this.aktivOppgaveNR++;
 			this.visAktivOppgave();
 	}
@@ -173,17 +246,20 @@ public class Oppgavesamling {
 			{
 			    //exception handling left as an exercise for the reader
 				FileWriter fileWriter = new FileWriter(filNavn, true);
-				output = new Formatter (fileWriter);//Ã‚pner fila for skriving, hvis den ikke finnes, opprettes den
+				output = new Formatter (fileWriter);//Åpner fila for skriving, hvis den ikke finnes, opprettes den
 			}
+			//feil behandling
 			catch ( SecurityException securityException )
 			{
+				//Meldinger evd feil
 				JOptionPane.showMessageDialog(null, "", "Du har ikke skriverettigheter til denne fila", JOptionPane.PLAIN_MESSAGE );
 				System.exit( 1 ); // avslutter programmet
 
 			}
+			//feil behandling
 			catch ( FileNotFoundException fileNotFoundException )
 			{
-				JOptionPane.showMessageDialog(null, "", "Feil ved Ã‚pning av fila", JOptionPane.PLAIN_MESSAGE );
+				JOptionPane.showMessageDialog(null, "", "Feil ved Ãƒâ€špning av fila", JOptionPane.PLAIN_MESSAGE );
 				System.exit( 1 ); // avslutter programmet
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -194,11 +270,12 @@ public class Oppgavesamling {
 			// opprett filen
 			output.format("%s", innhold);
 
-
+			//stnger filen etter skriving
 			if ( output != null)
 				output.close();
 
 	}
+	//Diverse get og set funksjoiner knyttet til klassens variabler
 
 	public int getAntallRiktigeSvar() {
 		return this.antallRiktigeSvar;
@@ -217,27 +294,8 @@ public class Oppgavesamling {
 	}
 
 	public int getAntalOppgaver(){
-	/*	int antallOppgaver=0; 
-		for(int i=0; i<this.oppgaver.length; i++){
-			if(this.oppgaver[i]!=null) antallOppgaver++;
-		}
-		JOptionPane.showMessageDialog(null, "", Integer.toString(antallOppgaver), JOptionPane.PLAIN_MESSAGE );
-		*/	
-		return this.antallOppgaver; 
+
+		return this.antallOppgaver;
 	}
 }
-/*
- *	Ikkje tatt i bruk.
- *
- * 	public int countLines(String filename) throws IOException {
 
-	    LineNumberReader reader  = new LineNumberReader(new FileReader(filename));
-	int cnt = 0;
-	String lineRead = "";
-	while ((lineRead = reader.readLine()) != null) {}
-
-	cnt = reader.getLineNumber();
-	reader.close();
-	return cnt;
-	}
-  */
