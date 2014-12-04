@@ -5,25 +5,27 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.*;
+
 import javax.swing.JOptionPane;
-
-
 
 public class LaerersInnlegging {
 
 	public LaerersInnlegging() {
-		// kjøre hent inn ord
+		// kj�re hent inn ord
 		//lag elevliste
-		ArrayList<Innlegg> midlertidigListe = hentInnOrd();
-		lagElevliste();
-		
-		// lagre til fil 
-		
+        String [] verdier = {"elev", "flere ord"};
+        String valgt;
+        valgt=(String)JOptionPane.showInputDialog(null, "Legge til: ", "Hva vil du gjøre?", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
+        
+        if (valgt.equals("elev")){
+        	lagElevliste();
+        }else{
+        	ArrayList<Innlegg> midlertidigListe = hentInnOrd();
+        }
+		JOptionPane.showMessageDialog(null,  "Takk, du kan n� be elevene gjennomf�re pr�ven","Takk!", JOptionPane.PLAIN_MESSAGE );        
 	}
-	//Oppretter metode hvor det skal hentes inn Fornavn, Etternavn og Nivå på eleven
+	//Oppretter metode hvor det skal hentes inn Fornavn, Etternavn og Niv� p� eleven
 	public static void lagElevliste()
 	{	//Lager en Arraylist til tilleggsklassen "Elev"
 		ArrayList<Elev> Elevliste = new ArrayList<Elev>();
@@ -35,11 +37,11 @@ public class LaerersInnlegging {
 		
 		while (true){
 			int elevTellerer=0;
-			elevTellerer++;  
+			elevTellerer++; 
 			//Gir variablene verdier med inputdialoger fra klassen JOptionPane
-			Fornavn = JOptionPane.showInputDialog(null, "Skriv inn fornavnet til elev "+elevTellerer, "Fornavn", JOptionPane.PLAIN_MESSAGE);
-			Etternavn = JOptionPane.showInputDialog(null, "Skriv inn etternavn til elev "+elevTellerer, "Etternavn", JOptionPane.PLAIN_MESSAGE);
-			//Med nivaaElev og flereOrd må jeg gjøre de om til int fordi det skal brukes tall i inputdialogboksen
+			Fornavn = JOptionPane.showInputDialog(null, "Elevens fornavn "+elevTellerer, "Fornavn", JOptionPane.PLAIN_MESSAGE);
+			Etternavn = JOptionPane.showInputDialog(null, "Elevens etternavn "+elevTellerer, "Etternavn", JOptionPane.PLAIN_MESSAGE);
+			//Med nivaaElev og flereOrd m� jeg gj�re de om til int fordi det skal brukes tall i inputdialogboksen
 			nivaaElev = Integer.parseInt(JOptionPane.showInputDialog(null, "Hvilket nivå er eleven på?", "Nivå", JOptionPane.PLAIN_MESSAGE));
 			flereOrd = Integer.parseInt(JOptionPane.showInputDialog(null, "Er du ferdig trykk 1:", "Flere ord", JOptionPane.PLAIN_MESSAGE));
 			
@@ -52,7 +54,7 @@ public class LaerersInnlegging {
 			eleven.setnivaaElev(nivaaElev);
 			// legger objektet i arraylist
 			Elevliste.add(eleven);
-			//Hvis ikke læreren vil legge inn flere ord, går vi ut fra while-løkken
+			//Hvis ikke læreren vil legge inn flere ord, g�r vi ut fra while-l�kken
 			if (flereOrd != 0){
 				break;
 			}
@@ -64,16 +66,16 @@ public class LaerersInnlegging {
 		}
 		
 	
-	//Lager en metode som skal sende elevens navn og nivå til fil
+	//Lager en metode som skal sende elevens navn og niv� til fil
 	public static void elevTilFil(ArrayList<Elev> minListe) 
 	{	
 		
 		Formatter output = null; 
 		try
 		{
-		    //For å skrive til fil må jeg bruke klassen FileWriter		
+		    //For � skrive til fil m� jeg bruke klassen FileWriter		
 			FileWriter fileWriter = new FileWriter("elever.txt", true); 
-			output = new Formatter (fileWriter);//åpner fila elever.txt for skriving, hvis den ikke finnes, opprettes den
+			output = new Formatter (fileWriter);//�pner fila elever.txt for skriving, hvis den ikke finnes, opprettes den
 		}
 		//Oppretter feilmeldinger slik at hvis programmet ikke finner filen, kommer det en feilmelding som sier det, istedenfor errorer
 		catch ( SecurityException securityException )
@@ -84,7 +86,7 @@ public class LaerersInnlegging {
 		}
 		catch ( FileNotFoundException fileNotFoundException )
 		{
-			JOptionPane.showMessageDialog(null, "", "Feil ved âˆšÃ‡pning av fila", JOptionPane.PLAIN_MESSAGE );
+			JOptionPane.showMessageDialog(null, "", "Feil ved �pning av fila", JOptionPane.PLAIN_MESSAGE );
 			System.exit( 1 ); // avslutter programmet
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -124,11 +126,11 @@ public class LaerersInnlegging {
 		//Oppretter variabler av type int som senere blir tildelt verdi
 		int nivaa, flereOrd;
 		
-		//Oppretter en while-løkke som kjører så lenge den er "true"
+		//Oppretter en while-l�kke som kj�rer s� lenge den er "true"
 		while (true){
 			norskOrd = JOptionPane.showInputDialog(null, "Skriv inn et norskt ord:", "Norsk", JOptionPane.PLAIN_MESSAGE);
 			engelskOrd = JOptionPane.showInputDialog(null, "Skriv inn et tilsvarende engelsk ord:", "Engelsk", JOptionPane.PLAIN_MESSAGE);
-			nivaa = Integer.parseInt(JOptionPane.showInputDialog(null, "Skriv inn nivâˆšâ€¢ (eks: 1, 2 eller 3):", "Nivâˆšâ€¢", JOptionPane.PLAIN_MESSAGE));
+			nivaa = Integer.parseInt(JOptionPane.showInputDialog(null, "Skriv inn niv� (eks: 1, 2 eller 3):", "Niv�", JOptionPane.PLAIN_MESSAGE));
 			flereOrd = Integer.parseInt(JOptionPane.showInputDialog(null, "Vil du se flere ord, trykk 0:", "Flere ord", JOptionPane.PLAIN_MESSAGE));
 			// lager nytt objekt
 			Innlegg midlertidigInnlegg = new Innlegg();
@@ -139,7 +141,7 @@ public class LaerersInnlegging {
 			// legge objektet i arraylist
 			Innleggsliste.add(midlertidigInnlegg);
 			
-			//Her går vi ut av while-løkken hvis flereOrd er noe annet enn 0
+			//Her g�r vi ut av while-l�kken hvis flereOrd er noe annet enn 0
 			if (flereOrd != 0){
 				break;
 			}
@@ -155,9 +157,9 @@ public class LaerersInnlegging {
 		Formatter output = null; 
 		try
 		{
-		    //For å skrive til fil må jeg bruke klassen FileWriter	
+		    //For � skrive til fil m� jeg bruke klassen FileWriter	
 			FileWriter fileWriter = new FileWriter("laerersord.txt", true); 
-			output = new Formatter (fileWriter);//åpner fila laerersord.txt for skriving, hvis den ikke finnes, opprettes den
+			output = new Formatter (fileWriter);//�pner fila laerersord.txt for skriving, hvis den ikke finnes, opprettes den
 		}
 		//Oppretter feilmeldinger slik at hvis programmet ikke finner filen, kommer det en feilmelding som sier det, istedenfor errorer
 		catch ( SecurityException securityException )
@@ -168,30 +170,23 @@ public class LaerersInnlegging {
 		}
 		catch ( FileNotFoundException fileNotFoundException )
 		{
-			JOptionPane.showMessageDialog(null, "", "Feil ved âˆšÃ‡pning av fila", JOptionPane.PLAIN_MESSAGE );
+			JOptionPane.showMessageDialog(null, "", "Feil ved �pning av fila", JOptionPane.PLAIN_MESSAGE );
 			System.exit( 1 ); // avslutter programmet
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		
-		
-		// skrive ordene til fil via system out print
-	
-		for (Innlegg detteInnlegget : minListe){
-			
+		for (Innlegg detteInnlegget : minListe){			
 			System.out.println(detteInnlegget.getNorskOrd());
 			System.out.println(detteInnlegget.getEngelskOrd());
 			System.out.println(detteInnlegget.getNivaa());
 			output.format("%s %s %d\n", detteInnlegget.getNorskOrd(), detteInnlegget.getEngelskOrd(), detteInnlegget.getNivaa());
-
-			
-			
 		}
 		//Lukker filen
-		if ( output != null)
+		if ( output != null){
 			output.close();
-		
+		}
 	}
-
 }
