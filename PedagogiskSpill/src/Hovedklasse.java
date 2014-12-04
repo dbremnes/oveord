@@ -13,10 +13,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
 import java.util.*;
-/*
- * Fyljande import skal brukast til å gi Tab-order, altså at input-feltet er første tab-stop, svar-knappen er nr.2 etc.
- * import org.eclipse.wb.swing.FocusTraversalOnArray;
- * Desverre funkar den ikkje!  Grrr...
+/**********************PROGRAMSTART**************************
+ * NB! Når du kjører programmet første gang er det viktig 
+ * å følge en spesiell rekkefølge
+ * Start som lærer. Legg inn elever. Legg inn ord.
+ * Først da kjører programmet uten problem for eleven
  */
 
 
