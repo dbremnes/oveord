@@ -1,5 +1,5 @@
 //Oppgavesamling
-/* Denne klassa skal instansiere fleire objekt av typen â€œoppgaveâ€?, altså eit sett med oppgåver (eller ei samling om du vil). Desse kan så testast og vil etterkvart innehalde sine poengsummar. Denne klassa vil dermed kunne innehalde aggregert poengsum og kommunisere med brukar-objektet om å oppgradere level, tilføre nye poeng (prosentar kanskje?)  */
+/* Denne klassa skal instansiere fleire objekt av typen â€œoppgaveâ€?, alts� eit sett med oppg�ver (eller ei samling om du vil). Desse kan s� testast og vil etterkvart innehalde sine poengsummar. Denne klassa vil dermed kunne innehalde aggregert poengsum og kommunisere med brukar-objektet om � oppgradere level, tilføre nye poeng (prosentar kanskje?)  */
 
 import java.awt.Panel;
 import java.awt.Window;
@@ -34,31 +34,31 @@ public class Oppgavesamling {
 	private int antallOppgaver;
 	private int antallRiktigeSvar;
 	private Spilleren spiller;
-	private String riktigBesvart="Riktig besvart oppgaver er: ";
-	private String feilBesvart="Feil besvarte oppgaver er ";
+	private String riktigBesvart="";
+	private String feilBesvart="";
 
 	//private int oppgaver_sorteringsliste[]; // Innheld sorteringsrekkefølga, produsert av metode sorter() Ser ikke at denne trengs
 
 	public Oppgavesamling(String filNavn, Hovedklasse vindu) {
 		// Konstruktøren
 
-		this.vindu = vindu; // Sett peikaren frå konstruktør-parameteret til klassevariabel.
+		this.vindu = vindu; // Sett peikaren fr� konstruktør-parameteret til klassevariabel.
 		this.spiller=vindu.spiller; // lag peikar til spiller-objektet fra hovudvinduet
 		//spillerNivaa=spilleren.getNivaa();
-			JOptionPane.showMessageDialog(null,  "Nivå:"+this.spiller.getNivaa(), null, JOptionPane.PLAIN_MESSAGE );
+		//DEBUG: JOptionPane.showMessageDialog(null,  "Niv�:"+this.spiller.getNivaa(), null, JOptionPane.PLAIN_MESSAGE );
 
 		try {
 	        this.fil=new Scanner(new File(filNavn));
-			 // Hentar inn "laerersord.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
+			 // Hentar inn "laerersord.txt" (el.l.), som Kristina produserer i sin klasse, dette m� vel utvides og endres med varierende oppgaver
 	        this.oppgaver = new OppgavetypeInput[100];
-	        this.lesInnOppgaveObjekt();  // Lag objekt på bakgrunn av fila
+	        this.lesInnOppgaveObjekt();  // Lag objekt p� bakgrunn av fila
 			this.sorterOppgaver("alfabetisk");  // Sorter dei
 
 
 		 } // end try
 	 	catch ( FileNotFoundException fileNotFoundException ){
 				lagFil(filNavn,"");
-	 			JOptionPane.showMessageDialog(null,  "Feil ved åpning av fila.", null, JOptionPane.PLAIN_MESSAGE );
+	 			JOptionPane.showMessageDialog(null,  "Feil ved �pning av fila.", null, JOptionPane.PLAIN_MESSAGE );
 	 			return;
 		} // end catch
 		this.aktivOppgaveNR=0;
@@ -69,19 +69,19 @@ public class Oppgavesamling {
 	private void lesInnOppgaveObjekt() {
 		int oppgaveTeller=0;
 		while(this.fil.hasNext()){
-		 // instansier eit oppgave-objekt, i oppg-matrisen. Får objektet med data frå input-fila.
+		 // instansier eit oppgave-objekt, i oppg-matrisen. F�r objektet med data fr� input-fila.
 			String oppgaveOrd = this.fil.next();
 			String oppgaveFasit = this.fil.next();
 			int nivaa = Integer.parseInt(this.fil.next());
-			//oppgavene skal bare legges til om nivået stemmer
+			//oppgavene skal bare legges til om niv�et stemmer
 			if(this.spiller.getNivaa()==nivaa){
-				// This er lagt til, fordi oppgåva skal kunne trigge "neste oppgåve" her i oppgåvesamlinga.
+				// This er lagt til, fordi oppg�va skal kunne trigge "neste oppg�ve" her i oppg�vesamlinga.
 				this.oppgaver[oppgaveTeller] = new OppgavetypeInput(oppgaveOrd,oppgaveFasit,nivaa,this);
 				oppgaveTeller++;
 			}
 		}
 		//variabler for kontroll av andel korrekte svar
-		antallOppgaver=oppgaveTeller;
+		this.antallOppgaver= oppgaveTeller-1;
 	}
 
 	private void sorterOppgaver(String type)
@@ -103,60 +103,58 @@ public class Oppgavesamling {
 					oppgaver[k]=oppgaver[this.oppgaver.length];
 				}
 				aktivOppgaveNR=0;
-
-
 		}
-
 
 	public void visAktivOppgave(){
 		/*
-		 *  Viser oppgåva som skal vere aktiv.
+		 *  Viser oppgava som skal vere aktiv.
 		 */
 		this.vindu.setContentPane( oppgaver[this.aktivOppgaveNR].visOppgave() );
 		this.vindu.validate();
 	}
 
 	public void nesteOppgave(){
-		// Denne vert trigga av oppgave-objektet, når neste oppgåve skal visast.
-		//sjekker om alle oppgaver på nivået er løst
-		if(this.aktivOppgaveNR==this.antallOppgaver-1){
+		// Denne vert trigga av oppgave-objektet, n�r neste oppg�ve skal visast.
+		//sjekker om alle oppgaver p� niv�et er løst
+		if(this.aktivOppgaveNR==this.antallOppgaver){
 			this.antallRiktigeSvar=0;
-			for(int i=1;i>this.oppgaver.length;i++){
-				if(this.oppgaver[i].getRiktigBesvart()) this.antallRiktigeSvar++;
-			}
-			//finner prosentandel riktige svar
-			double andel=this.antallRiktigeSvar/antallOppgaver;
-			//endrer nivået og oppgave utvalg om nivået er over 80%
-			if (andel>0.8){
-				int nyttNivaa = this.spiller.nivaaOpp();
-				//hva skal skje i tillegg?
-				//noe kult må skje
-
-				//sjekk om alt er riktig
-				if(andel==1){
-					//noe ekstra kult skal skje
-				}//end if
-
-			}
-			// Kva skal skje når spelet er over.
-			JOptionPane.showMessageDialog(null, "", "Takk for alt!", JOptionPane.PLAIN_MESSAGE );
-
-			// Køyre metode for å loope gjennom oppgavene og skriv ut i resultat-fil .
-			for (int i=0; i<this.oppgaver.length; i++)
-			{
+			for(int i=0; i<this.antallOppgaver; i++){
 				if (this.oppgaver[i].getRiktigBesvart()){
 					antallRiktigeSvar++;
 					riktigBesvart+=this.oppgaver[i].getOppgaveOrd();
+					JOptionPane.showMessageDialog(null, "Riktig:"+riktigBesvart, "", JOptionPane.PLAIN_MESSAGE );
 				}else{
 					feilBesvart+=this.oppgaver[i].getOppgaveOrd()+" "+this.oppgaver[i].getElevensSvar();
+					JOptionPane.showMessageDialog(null, "Feil: "+feilBesvart, "", JOptionPane.PLAIN_MESSAGE );					
 				}
 			}
-				String filnavnet=this.spiller.getNavn()+".txt";
-				riktigBesvart+="antall riktig besvarte oppgaver er "+antallRiktigeSvar+"\n";
-				String skrivInformasjon=riktigBesvart+"\n"+feilBesvart;
-				lagFil(filnavnet,skrivInformasjon);
-				JOptionPane.showMessageDialog(null, "", filnavnet, JOptionPane.PLAIN_MESSAGE );
+			//finner prosentandel riktige svar
+			double andel=this.antallRiktigeSvar/antallOppgaver;
+			//endrer niv�et og oppgave utvalg om niv�et er over 80%
+			if (andel>0.8){
+				int nyttNivaa = this.spiller.nivaaOpp();
+				//hva skal skje i tillegg?
+				//noe kult m� skje
+				//sjekk om alt er riktig
+				if(andel==1){
+					//noe EKSTRA kult skal skje, vedkomande har full pott.
+				}//end if
+			}
 
+			/*
+			 * Skriv resultatet til fil, p� m�nsteret Resultat_Nivaa_Elevens_Navn.txt
+			 */
+				String filnavnet= "Resultat_"+Integer.toString(this.spiller.getNivaa())+"_"+this.spiller.getFornavn()+"_"+this.spiller.getEtternavn()+".txt";
+				// Lag klar string til fila, alts� innhaldet. 
+				String filInnholdet = "Antall riktige svar: "+antallRiktigeSvar+"\n";			
+				filInnholdet += "Riktig besvart oppgaver er: "+riktigBesvart+"\n";
+				filInnholdet += "Feil besvarte oppgaver er:"+feilBesvart+"\n";
+				lagFil(filnavnet,filInnholdet);
+				
+				JOptionPane.showMessageDialog(null, filnavnet, "", JOptionPane.PLAIN_MESSAGE );
+
+				// Kva skal skje n�r spelet er over.
+				JOptionPane.showMessageDialog(null, "Takk for n�, velkommen igjen!", "Takk!", JOptionPane.PLAIN_MESSAGE );
 
 			vindu.dispose();
 	}else{
@@ -218,8 +216,18 @@ public class Oppgavesamling {
 		this.aktivOppgaveNR = aktivOppgaveNR;
 	}
 
+	public int getAntalOppgaver(){
+	/*	int antallOppgaver=0; 
+		for(int i=0; i<this.oppgaver.length; i++){
+			if(this.oppgaver[i]!=null) antallOppgaver++;
+		}
+		JOptionPane.showMessageDialog(null, "", Integer.toString(antallOppgaver), JOptionPane.PLAIN_MESSAGE );
+		*/	
+		return this.antallOppgaver; 
+	}
 }
 /*
+ *	Ikkje tatt i bruk.
  *
  * 	public int countLines(String filename) throws IOException {
 
