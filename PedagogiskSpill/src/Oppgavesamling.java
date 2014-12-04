@@ -227,7 +227,7 @@ public class Oppgavesamling {
 
 
 				// Kva skal skje når spelet er over.
-				JOptionPane.showMessageDialog(null, "Takk for nå, velkommen igjen!", "Takk!", JOptionPane.PLAIN_MESSAGE );
+				JOptionPane.showMessageDialog(null, "Du klarte: "+this.antallRiktigeSvar, "Takk! Og velkommen tilbake", JOptionPane.PLAIN_MESSAGE );
 
 			vindu.dispose();
 	}else{
