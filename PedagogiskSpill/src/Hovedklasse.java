@@ -27,7 +27,7 @@ public class Hovedklasse extends JFrame {
     public static void main (String[] args){
 
     	//Programmet starter med å vente på input fra bruker om rolle
-        String [] verdier = {"Elev", "Lårer"};
+        String [] verdier = {"Elev", "Lærer"};
         String valgt;
         String filnavn = "laerersord.txt";
         valgt=(String)JOptionPane.showInputDialog(null, "Velg rolle", "Elev eller lærer?", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
