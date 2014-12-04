@@ -121,7 +121,7 @@ public class Oppgavesamling {
 			}
 		}
 		//variabler for kontroll av antall oppgaver
-		this.antallOppgaver= oppgaveTeller-1;
+		this.antallOppgaver= oppgaveTeller;
 
 
 	}
