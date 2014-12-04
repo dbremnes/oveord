@@ -1,6 +1,6 @@
 /*
  * Klasse OppgavesamlingInput, av Torbjørn Frantsen
- * Form�l: presentere gresesnitt, sjekke resultat og formidle denne infoen til Oppgavesamling.
+ * Formål: presentere gresesnitt, sjekke resultat og formidle denne infoen til Oppgavesamling.
  */
 
 import java.awt.BorderLayout;
@@ -37,7 +37,7 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 	private String oppgaveOrd;
 	private String oppgaveFasit;
 	private int nivaa;
-	private boolean besvart; // True n�r spelar har besvart oppg�va (er ferdig)
+	private boolean besvart; // True når spelar har besvart oppgåva (er ferdig)
 	private Oppgavesamling oppgavesamlinga;
 	private boolean riktigBesvart;
 	private String svar;
@@ -45,13 +45,13 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 	private int forsokBrukt; 
 
 	/*
-	 * Objektegenskapar - Her alt som har med grensesnittet � gjere.
+	 * Objektegenskapar - Her alt som har med grensesnittet å gjere.
 	 */
 	private JFormattedTextField inputSvar; // Tekstfelt der brukaren skriv svaret
-	private boolean inputSvarErEndra; // Held styr p� om brukaren har skrive noko i input'en.
+	private boolean inputSvarErEndra; // Held styr på om brukaren har skrive noko i input'en.
 	private JPanel contentPane;  // JPanelet, dette vert bygd opp og vert sendt over til Oppgavesamling, som vi tek det vidare til hovudvinduet.
-	private JButton btnLagre; // Knapp for � svare.
-	// Nokre labels for � vise informasjon i grensesnittet. Brukar prefiks lbl for � lettare kjenne dei igjen.
+	private JButton btnLagre; // Knapp for å svare.
+	// Nokre labels for å vise informasjon i grensesnittet. Brukar prefiks lbl for å lettare kjenne dei igjen.
 	private JLabel lblNivaa;
 	private JLabel lblOppgave;
 	private JLabel lblSvar;
@@ -63,8 +63,8 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		/* Denne koda er generert av Windowbuilder-plugin'en til Eclipse.
 		 * Den forenklar grensesnittbygging veldig.
-		 * Form�let med � bruke EventQueue og lage ein Runnable er � lage ein tr�d som køyrer programmet.
-		 * Fleirtr�d-køyring er kanskje ikkje p�krevd med v�rt vesle program, men det skadar jo heller ikkje...   :)
+		 * Formålet med å bruke EventQueue og lage ein Runnable er å lage ein tråd som køyrer programmet.
+		 * Fleirtråd-køyring er kanskje ikkje påkrevd med vårt vesle program, men det skadar jo heller ikkje...   :)
 		 */
 
 		EventQueue.invokeLater(new Runnable() {
@@ -83,7 +83,7 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 	 */
 	public OppgavetypeInput() {
 	
-		this("test","prøve",1,null); // Puttar inn parameter-verdiar n�r objektet vert testa.
+		this("test","prøve",1,null); // Puttar inn parameter-verdiar når objektet vert testa.
 		System.out.println("Burde kanskje ikkje lage objekt utan parametrar?");
 	}
 
@@ -94,11 +94,11 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		//er dette riktig?
 		this.setBesvart(true);
 		this.oppgavesamlinga = oppgavesamlinga;
-		/* I staden for � legge alt med grensesnitt her, slik Windowbuilder gjer det, vil eg ha ein rein konstruktør.
-		 * Har ikkje f�tt lest meg heilt opp p� MVC enno, men dette er vel eit lite steg i den retning, � f� View-element bort fr� program-logikken.
+		/* I staden for å legge alt med grensesnitt her, slik Windowbuilder gjer det, vil eg ha ein rein konstruktør.
+		 * Har ikkje fått lest meg heilt opp på MVC enno, men dette er vel eit lite steg i den retning, å få View-element bort frå program-logikken.
 		 */
 		lagGrensesnittet();
-		this.antalTilgjengeligeForsok = 2; // Dette kan jo vere en parameter til konstruktøren, d� m� lærar velge antal forsøk i sin input( ?)
+		this.antalTilgjengeligeForsok = 2; // Dette kan jo vere en parameter til konstruktøren, da må lærar velge antal forsøk i sin input( ?)
 		this.forsokBrukt = 0;
 
 	}
@@ -118,7 +118,7 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		btnLagre = new JButton("Svar");
 		btnLagre.setForeground(Color.BLACK);
 		btnLagre.addActionListener(this); // Sett klassa sjølv til eventListener for knappen.
-		// Label - Oppg�veordet
+		// Label - Oppgåveordet
 		lblOppgaveOrdet = new JLabel(this.oppgaveOrd);
 		lblOppgaveOrdet.setBackground(Color.ORANGE);
 		lblOppgaveOrdet.setFont(new Font("Dialog", Font.BOLD, 30));
@@ -134,8 +134,8 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		inputSvar.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		inputSvar.setBounds(206, 116, 260, 43);
 		contentPane.add(inputSvar);
-		/* La til ein focus-listener her, som gjer at feltet blir blanka ut n�r nokon set markøren der.
-		 * Men berre første gong, finn det ikkje vidare brukarvenlig � tøme feltet KVAR gong det f�r fokus.
+		/* La til ein focus-listener her, som gjer at feltet blir blanka ut når nokon set markøren der.
+		 * Men berre første gong, finn det ikkje vidare brukarvenlig å tøme feltet KVAR gong det får fokus.
 		 */
 		inputSvar.addFocusListener(new FocusAdapter() {
 			@Override
@@ -147,13 +147,13 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 			}
 		});
 
-		// Label - Heading for oppg�va
+		// Label - Heading for oppgaven
 		JLabel lblHeadingOppgavetype = new JLabel("Gloseposen");
 		lblHeadingOppgavetype.setFont(new Font("Dialog", Font.BOLD, 30));
 		lblHeadingOppgavetype.setBounds(38, 16, 312, 52);
 		contentPane.add(lblHeadingOppgavetype);
-		// Label - Oppg�veordet
-		lblNivaa = new JLabel(Integer.toString(this.nivaa)); // Sett inn oppg�veordet.
+		// Label - Oppgaveordet
+		lblNivaa = new JLabel(Integer.toString(this.nivaa)); // Sett inn oppgaveordet.
 		lblNivaa.setFont(new Font("Dialog", Font.BOLD, 16));
 		lblNivaa.setBounds(557, 27, 27, 20);
 		contentPane.add(lblNivaa);
@@ -168,7 +168,7 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		btnNesteOppg.setBounds(507, 601, 111, 31);
 		contentPane.add(btnNesteOppg);
 		
-		JLabel lblLevelellerNiv = new JLabel("Niv�:");
+		JLabel lblLevelellerNiv = new JLabel("Nivå:");
 		lblLevelellerNiv.setBounds(498, 27, 47, 20);
 		contentPane.add(lblLevelellerNiv);
 		// Label - ordet "Oppgave" framfor oppgaveordet
@@ -180,7 +180,7 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 
 		// Label for OppgaveNr / Antaloppgaer-feltet.
 		String oppgNr = (String) Integer.toString( this.oppgavesamlinga.getAktivOppgaveNR()+1 );
-		JOptionPane.showMessageDialog(this,oppgNr);
+		//JOptionPane.showMessageDialog(this,oppgNr);
 		String oppgTotalt = Integer.toString( this.oppgavesamlinga.getAntalOppgaver() );
 		lblOppgaveNr = new JLabel(oppgNr+"/"+oppgTotalt);
 		lblOppgaveNr.setFont(new Font("Dialog", Font.BOLD, 16));
@@ -201,18 +201,18 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		/* Denne blir trigga av knappen. Den prøvar alts� � sjekke svar.
-		 * Men vi tek først ein sjekk p� om brukar har skrive noko, ellers er det vel greit � anta at svaret er feil...
+		/* Denne blir trigga av knappen. Den prøvar altså å sjekke svar.
+		 * Men vi tek først ein sjekk på om brukar har skrive noko, ellers er det vel greit å anta at svaret er feil...
 		 */
 		AbstractButton source = (AbstractButton) arg0.getSource(); // Hent ut source-objektet
-		String knappText =  source.getText(); // Hent teksta fr� knappen
+		String knappText =  source.getText(); // Hent teksta fra knappen
 		if(knappText.equals("neste oppg")){
 			this.nesteOppgave();
 		}else{
 			if(this.inputSvarErEndra){
 				sjekkSvar();
 			}else{
-				// Ein liten heads-up n�r ein prøvar svare blankt, har sentrert infoboksa over frame'n.
+				// Ein liten heads-up når ein prøvar svare blankt, har sentrert infoboksa over frame'n.
 				JOptionPane.showMessageDialog(this,"Du bør kanskje skrive eit svar først?");
 			}
 		}
@@ -229,10 +229,10 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		String forslag = (String) this.inputSvar.getText();
 		this.forsokBrukt++;
 		
-		if(forslag.equals(this.oppgaveFasit)){  // String-samanlikning, m� bruke equals() fra String-klassa, istaden for ==
-			JOptionPane.showMessageDialog(this,"Hurra! You rule");  // Svært pedagogisk riktig tilbakemelding.
+		if(forslag.equals(this.oppgaveFasit)){  // String-samanlikning, må bruke equals() fra String-klassa, istaden for ==
+//			JOptionPane.showMessageDialog(this,"Hurra! You rule");  // Svært pedagogisk riktig tilbakemelding./ ToF: Det er kanskje pedagogisk riktig, men også litt slitsom? ;-)
 			this.riktigBesvart = true;
-			//Dag forsøker � samle opp svar og riktige verdier
+			//Dag forsøker å samle opp svar og riktige verdier
 			this.nesteOppgave();
 		}else{
 			JOptionPane.showMessageDialog(this,"Please try again!");
@@ -242,7 +242,7 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 			//gir kun et forsøk per
 
 			if(this.forsokBrukt >= this.antalTilgjengeligeForsok){
-				JOptionPane.showMessageDialog(this,"Du har brukt opp dine forsøk. Riktig svar var:'"+this.oppgaveFasit+"'");
+				JOptionPane.showMessageDialog(this,"Du har brukt opp dine forsøk. Riktig svar var: '"+this.oppgaveFasit+"'");
 				this.nesteOppgave();
 			}
 			//inputSvarErEndra=false; // Nullstill, slik at brukaren kan prøve igjen
@@ -250,13 +250,13 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 	}
 
 	public JPanel visOppgave(){
-		// Sender rett og slett contentPane'et, alts� grensesnittet. Skal brukast av Oppgavesamling.
+		// Sender rett og slett contentPane'et, altså grensesnittet. Skal brukast av Oppgavesamling.
 		return this.contentPane;
 	}
 
 	/*
-	 * Set'ers og Get'ers m�'n ha, om objektet skal fungere bra.
-	 * Ikkje s� mykje kvalitetssikring av objektets innkapsla egenskapar enno, men det kan jo kome...
+	 * Set'ers og Get'ers må'n ha, om objektet skal fungere bra.
+	 * Ikkje så mykje kvalitetssikring av objektets innkapsla egenskapar enno, men det kan jo kome...
 	 */
 	private void setBesvart(boolean b) {
 		this.besvart = b;
