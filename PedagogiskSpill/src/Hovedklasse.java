@@ -57,7 +57,7 @@ public class Hovedklasse extends JFrame {
 			 // Hentar inn "innlesteOppgaver.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
 		 } // end try
 	 	catch ( FileNotFoundException fileNotFoundException ){
-				Oppgavesamling.lagFil(filNavn);
+				Oppgavesamling.lagFil(filNavn,"");
 	 			//JOptionPane.showMessageDialog(null,  "Feil ved åpning av fila.", null, JOptionPane.PLAIN_MESSAGE );
 		} // end catch
 		
