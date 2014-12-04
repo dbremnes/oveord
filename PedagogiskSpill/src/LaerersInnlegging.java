@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class LaerersInnlegging {
 
 	public LaerersInnlegging() {
-		// kjâˆšâˆ�re hent inn ord
+		// kjøre hent inn ord
 		//lag elevliste
 		ArrayList<Innlegg> midlertidigListe = hentInnOrd();
 		lagElevliste();
