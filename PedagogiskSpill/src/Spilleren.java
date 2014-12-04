@@ -40,21 +40,24 @@ public class Spilleren {
 	   String streng = this.navn+" - Nivå:"+this.nivaa;
 	   return streng;
    }
-   /*
-    * Tenkjer kanskje at dette skal skje i oppgavesamling, det med å halde styr på antal riktige. 
-    * 
-    
-   public int setAntallRiktige(){
-	//har kontroll på antall riktige oppgaver innenfor et nivå
-		this.antallRiktige++;
-		setPoengsum();
-		return this.antallRiktige;
-   }
-	
    
-   public int getAntallRiktige()
-   {
-	   return antallRiktige;
+   public String getNavn(){
+	   return this.navn;
    }
-   */ 
+	  
+	public String getFornavn() {
+		return fornavn;
+	}
+	
+	public void setFornavn(String fornavn) {
+		this.fornavn = fornavn;
+	}
+	
+	public String getEtternavn() {
+		return etternavn;
+	}
+	
+	public void setEtternavn(String etternavn) {
+		this.etternavn = etternavn;
+	} 
 }
