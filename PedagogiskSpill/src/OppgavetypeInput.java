@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Window.Type;
 // import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
+
 import javax.swing.ImageIcon;
 
 
@@ -117,6 +118,7 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		 */
 		btnLagre = new JButton("Svar");
 		btnLagre.setForeground(Color.BLACK);
+		btnLagre.setActionCommand("btnLagre");
 		btnLagre.addActionListener(this); // Sett klassa sjølv til eventListener for knappen.
 		// Label - Oppgåveordet
 		lblOppgaveOrdet = new JLabel(this.oppgaveOrd);
@@ -130,6 +132,8 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		inputSvar = new JFormattedTextField();
 		inputSvar.setBackground(Color.WHITE);
 		inputSvar.setText("");
+		inputSvar.setActionCommand("inputSvar");
+		inputSvar.addActionListener(this); // Sett klassa sjÃ¸lv til eventListener for knappen.		
 		inputSvarErEndra = false; // I utgangspunktet er input-feltet ikkje endra.
 		inputSvar.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		inputSvar.setBounds(206, 116, 260, 43);
@@ -164,6 +168,7 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		contentPane.add(lblSvar);
 
 		btnNesteOppg = new JButton("neste oppg");
+		btnNesteOppg.setActionCommand("btnNesteOppg");		
 		btnNesteOppg.addActionListener(this);
 		btnNesteOppg.setBounds(507, 601, 111, 31);
 		contentPane.add(btnNesteOppg);
@@ -204,18 +209,19 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		/* Denne blir trigga av knappen. Den prøvar altså å sjekke svar.
 		 * Men vi tek først ein sjekk på om brukar har skrive noko, ellers er det vel greit å anta at svaret er feil...
 		 */
-		AbstractButton source = (AbstractButton) arg0.getSource(); // Hent ut source-objektet
-		String knappText =  source.getText(); // Hent teksta fra knappen
-		if(knappText.equals("neste oppg")){
-			this.nesteOppgave();
-		}else{
+
+		String actionCommand = arg0.getActionCommand();
+
+	    if(actionCommand.equals("btnLagre") || actionCommand.equals("inputSvar") ){
 			if(this.inputSvarErEndra){
 				sjekkSvar();
 			}else{
-				// Ein liten heads-up når ein prøvar svare blankt, har sentrert infoboksa over frame'n.
-				JOptionPane.showMessageDialog(this,"Du bør kanskje skrive eit svar først?");
-			}
-		}
+				// Ein liten heads-up når ein prÃ¸var svare blankt, har sentrert infoboksa over frame'n.
+				JOptionPane.showMessageDialog(this,"Du bÃ¸r kanskje skrive eit svar fÃ¸rst?");
+			}	    	
+	    }else if(actionCommand.equals("btnNesteOppg") ){
+	    	this.nesteOppgave();
+	    }
 	}
 
 	private void nesteOppgave(){
