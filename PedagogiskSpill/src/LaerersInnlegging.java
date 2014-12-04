@@ -23,11 +23,11 @@ public class LaerersInnlegging {
 		// lagre til fil 
 		
 	}
-	
+	//Oppretter metode hvor det skal hentes inn Fornavn, Etternavn og Nivå på eleven
 	public static void lagElevliste()
-	{
+	{	//Lager en Arraylist til tilleggsklassen "Elev"
 		ArrayList<Elev> Elevliste = new ArrayList<Elev>();
-		
+		//Oppretter String og Int variabler 
 		String Fornavn, Etternavn;
 		int nivaaElev, flereOrd;
 		
@@ -35,8 +35,10 @@ public class LaerersInnlegging {
 		
 		while (true){
 			int elevTellerer++; 
+			//Gir variablene verdier med inputdialoger fra klassen JOptionPane
 			Fornavn = JOptionPane.showInputDialog(null, "Skriv inn fornavnet til elev "+elevTellerer, "Fornavn", JOptionPane.PLAIN_MESSAGE);
 			Etternavn = JOptionPane.showInputDialog(null, "Skriv inn etternavn til elev "+elevTellerer, "Etternavn", JOptionPane.PLAIN_MESSAGE);
+			//Med nivaaElev og flereOrd må jeg gjøre de om til int fordi det skal brukes tall i inputdialogboksen
 			nivaaElev = Integer.parseInt(JOptionPane.showInputDialog(null, "Hvilket nivå er eleven på?", "Nivå", JOptionPane.PLAIN_MESSAGE));
 			flereOrd = Integer.parseInt(JOptionPane.showInputDialog(null, "Er du ferdig trykk 1:", "Flere ord", JOptionPane.PLAIN_MESSAGE));
 			
@@ -47,29 +49,32 @@ public class LaerersInnlegging {
 			eleven.setFornavn(Fornavn);
 			eleven.setEtternavn(Etternavn);
 			eleven.setnivaaElev(nivaaElev);
-			// legge objektet i arraylist
+			// legger objektet i arraylist
 			Elevliste.add(eleven);
-			
+			//Hvis ikke læreren vil legge inn flere ord, går vi ut fra while-løkken
 			if (flereOrd != 0){
 				break;
 			}
-		}	
+		}
+		//Kall av metoden elevTilFil
 		elevTilFil(Elevliste);
 		
 		
 		}
 		
 	
-
+	//Lager en metode som skal sende elevens navn og nivå til fil
 	public static void elevTilFil(ArrayList<Elev> minListe) 
-	{
+	{	
+		
 		Formatter output = null; 
 		try
 		{
-		    //exception handling left as an exercise for the reader		
+		    //For å skrive til fil må jeg bruke klassen FileWriter		
 			FileWriter fileWriter = new FileWriter("elever.txt", true); 
-			output = new Formatter (fileWriter);//âˆšÃ‡pner fila kunder.txt for skriving, hvis den ikke finnes, opprettes den
+			output = new Formatter (fileWriter);//åpner fila elever.txt for skriving, hvis den ikke finnes, opprettes den
 		}
+		//Oppretter feilmeldinger slik at hvis programmet ikke finner filen, kommer det en feilmelding som sier det, istedenfor errorer
 		catch ( SecurityException securityException )
 		{
 			JOptionPane.showMessageDialog(null, "", "Du har ikke skriverettigheter til denne fila", JOptionPane.PLAIN_MESSAGE );
@@ -86,7 +91,7 @@ public class LaerersInnlegging {
 		}
 		
 		
-		// skrive ordene til fil
+		// skrive ordene til fil via system out print
 	
 		for (Elev denneEleven : minListe){
 			
@@ -98,6 +103,7 @@ public class LaerersInnlegging {
 			
 			
 		}
+		//Lukker filen
 		if ( output != null)
 			output.close();
 		
@@ -105,12 +111,19 @@ public class LaerersInnlegging {
 
 
 	
-	   
+	   //Lager en metode for læreren sine innlegg av ord
 	public static ArrayList<Innlegg> hentInnOrd(){
+		
+		//Oppretter variabler av type String som senere blir tildelt verdi
 		String norskOrd, engelskOrd;
+		
+		//Lager en Arraylist som sender til tilleggsklassen "Innlegg"
 		ArrayList<Innlegg> Innleggsliste = new ArrayList<Innlegg>();
 		
+		//Oppretter variabler av type int som senere blir tildelt verdi
 		int nivaa, flereOrd;
+		
+		//Oppretter en while-løkke som kjører så lenge den er "true"
 		while (true){
 			norskOrd = JOptionPane.showInputDialog(null, "Skriv inn et norskt ord:", "Norsk", JOptionPane.PLAIN_MESSAGE);
 			engelskOrd = JOptionPane.showInputDialog(null, "Skriv inn et tilsvarende engelsk ord:", "Engelsk", JOptionPane.PLAIN_MESSAGE);
@@ -125,24 +138,27 @@ public class LaerersInnlegging {
 			// legge objektet i arraylist
 			Innleggsliste.add(midlertidigInnlegg);
 			
+			//Her går vi ut av while-løkken hvis flereOrd er noe annet enn 0
 			if (flereOrd != 0){
 				break;
 			}
 		}
+		//Kall av metoden ordTilFil
 		ordTilFil(Innleggsliste);
 		return Innleggsliste;
 	}
 	
-
+	//Oppretter metoden ordTilFil 
 	public static void  ordTilFil(ArrayList<Innlegg> minListe) 
 	{
 		Formatter output = null; 
 		try
 		{
-		    //exception handling left as an exercise for the reader		
+		    //For å skrive til fil må jeg bruke klassen FileWriter	
 			FileWriter fileWriter = new FileWriter("laerersord.txt", true); 
-			output = new Formatter (fileWriter);//âˆšÃ‡pner fila kunder.txt for skriving, hvis den ikke finnes, opprettes den
+			output = new Formatter (fileWriter);//åpner fila laerersord.txt for skriving, hvis den ikke finnes, opprettes den
 		}
+		//Oppretter feilmeldinger slik at hvis programmet ikke finner filen, kommer det en feilmelding som sier det, istedenfor errorer
 		catch ( SecurityException securityException )
 		{
 			JOptionPane.showMessageDialog(null, "", "Du har ikke skriverettigheter til denne fila", JOptionPane.PLAIN_MESSAGE );
@@ -159,7 +175,7 @@ public class LaerersInnlegging {
 		}
 		
 		
-		// skrive ordene til fil
+		// skrive ordene til fil via system out print
 	
 		for (Innlegg detteInnlegget : minListe){
 			
@@ -171,6 +187,7 @@ public class LaerersInnlegging {
 			
 			
 		}
+		//Lukker filen
 		if ( output != null)
 			output.close();
 		
