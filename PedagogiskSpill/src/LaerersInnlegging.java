@@ -6,23 +6,36 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import javax.swing.JTextArea;
+import java.util.Scanner;
+import java.io.IOException;
+import java.lang.IllegalStateException;
+import java.util.NoSuchElementException;
+import java.io.BufferedWriter;
 
 import javax.swing.JOptionPane;
 
 public class LaerersInnlegging {
+	private Hovedklasse hoved;
+	private Scanner fil;
 
-	public LaerersInnlegging() {
+	public LaerersInnlegging(Hovedklasse vindu) {
 		// kjøre hent inn ord
 		//lag elevliste
-        String [] verdier = {"elev", "flere ord"};
+		this.hoved=vindu;
+        String [] verdier = {"elev", "flere ord", "se resultater"};
         String valgt;
         valgt=(String)JOptionPane.showInputDialog(null, "Legg til", "Hva vil du gjøre", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
 
         if (valgt.equals("elev")){
         	lagElevliste();
-        }else{
+        }else if (valgt.equals("flere ord")){
         	ArrayList<Innlegg> midlertidigListe = hentInnOrd();
         }
+        else{
+			this.hoved.velgSpiller();
+			this.seResultater();
+			}
 		JOptionPane.showMessageDialog(null,  "Takk, \n"+"Har du husket å legge inn ord?" + " Da kan du la elevene gjennomføre prøven","Takk!", JOptionPane.PLAIN_MESSAGE );
 	}
 	//Oppretter metode hvor det skal hentes inn Fornavn, Etternavn og Nivå på eleven
@@ -38,6 +51,7 @@ public class LaerersInnlegging {
 		while (true){
 			//Er dette riktig?
 			int elevTellerer=0;
+			try{
 			elevTellerer++;
 			//Gir variablene verdier med inputdialoger fra klassen JOptionPane
 			Fornavn = JOptionPane.showInputDialog(null, "Skriv inn fornavnet til elev "+elevTellerer, "Fornavn", JOptionPane.PLAIN_MESSAGE);
@@ -45,7 +59,7 @@ public class LaerersInnlegging {
 			//Med nivaaElev og flereOrd må jeg gjøre de om til int fordi det skal brukes tall i inputdialogboksen
 			nivaaElev = Integer.parseInt(JOptionPane.showInputDialog(null, "Hvilket nivå er eleven på?"+ " 1,2,3 ", "Nivå", JOptionPane.PLAIN_MESSAGE));
 			//flereOrd = Integer.parseInt(JOptionPane.showInputDialog(null, "Er du ferdig trykk 1:", "Flere ord", JOptionPane.PLAIN_MESSAGE));
-			flereOrd=JOptionPane.showConfirmDialog(null, "ønsker du å registrere flere elever?",null, JOptionPane.YES_NO_OPTION);
+
 			//Lager nytt objekt
 			Elev eleven = new Elev();
 
@@ -55,11 +69,17 @@ public class LaerersInnlegging {
 			eleven.setnivaaElev(nivaaElev);
 			// legger objektet i arraylist
 			Elevliste.add(eleven);
+
+
+			}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(null, "Du har gjort feil i registreringen husk at nivået er et tall ", "Feil registrering", JOptionPane.PLAIN_MESSAGE);
+			}
+			flereOrd=JOptionPane.showConfirmDialog(null, "ønsker du å registrere flere elever?",null, JOptionPane.YES_NO_OPTION);
 			//Hvis ikke lÃ¦reren vil legge inn flere ord, går vi ut fra while-løkken
 			if (flereOrd != 0){
 				break;
 			}
-		}
+			}
 		//Kall av metoden elevTilFil
 		elevTilFil(Elevliste);
 
@@ -129,6 +149,7 @@ public class LaerersInnlegging {
 
 		//Oppretter en while-løkke som kjører så lenge den er "true"
 		while (true){
+			try{
 			norskOrd = JOptionPane.showInputDialog(null, "Skriv inn et norskt ord:", "Norsk", JOptionPane.PLAIN_MESSAGE);
 			engelskOrd = JOptionPane.showInputDialog(null, "Skriv inn et tilsvarende engelsk ord:", "Engelsk", JOptionPane.PLAIN_MESSAGE);
 			nivaa = Integer.parseInt(JOptionPane.showInputDialog(null, "Skriv inn nivå (eks: 1, 2 eller 3):", "Nivå", JOptionPane.PLAIN_MESSAGE));
@@ -145,6 +166,9 @@ public class LaerersInnlegging {
 			//Her går vi ut av while-løkken hvis flereOrd er noe annet enn 0
 			if (flereOrd != 0){
 				break;
+			}
+			}catch(IllegalArgumentException e){
+									JOptionPane.showMessageDialog(null, "Du har gjort feil i registreringen husk at nivået er et tall ", "Feil registrering", JOptionPane.PLAIN_MESSAGE);
 			}
 		}
 		//Kall av metoden ordTilFil
@@ -189,5 +213,49 @@ public class LaerersInnlegging {
 		if ( output != null){
 			output.close();
 		}
+	}
+	private void seResultater(){
+	//tekstområde
+	JTextArea elevensResultater = new JTextArea();
+	String overskrifter;
+	overskrifter=this.hoved.spiller.getFornavn()+" "+this.hoved.spiller.getEtternavn()+"resultater";
+	overskrifter+="\n";
+	//gir overskriftene i teksområdet
+  	elevensResultater.setText(overskrifter);
+  	//String variabel for innlegging av resultatene i tekstområdet
+  	String resultatLinje="";
+  	//String tilfilnavnet
+  	String filnavn;
+
+	//prøver lesning av fil
+	filnavn="Resultat_"+this.hoved.spiller.getFornavn()+"_"+this.hoved.spiller.getEtternavn()+".txt";
+			try {
+				//oppretter fil scanneren, basert på innsendt filnavn
+		        this.fil=new Scanner(new File(filnavn));
+				 // Hentar inn "laerersord.txt" (el.l.), som Kristina produserer i sin klasse, dette må vel utvides og endres med varierende oppgaver
+				 //Oppretter en array med 100 plasser. Ideelt sett skulle antall plasser basert seg på antall oppgaver som eksisterer i file
+			 } // end try
+			 //Fanger opp eventuelle feil ved lesning av filen
+		 	catch ( FileNotFoundException fileNotFoundException ){
+		 			JOptionPane.showMessageDialog(null,  "Feil ved åpning av fila.", null, JOptionPane.PLAIN_MESSAGE );//Gir tilbakemeldingom feilen
+		 			return;
+			} // end catch
+			//sikrer at aktiv Oppgave starter på 0
+
+
+			while(this.fil.hasNext()){
+			 // Henter inn ei linje fra elevenes resultatfil
+			 //Leser inn resultatene fra et forsøk
+				resultatLinje = this.fil.next();
+				//JOptionPane.showMessageDialog(null,resultatLinje, null, JOptionPane.PLAIN_MESSAGE );
+				//Leser inn fasiten
+				resultatLinje+="\r\n";
+				elevensResultater.append(resultatLinje);
+				resultatLinje="";
+
+			}
+
+			//viser tekstområdet på skjermen
+			JOptionPane.showMessageDialog( null, elevensResultater,"Resultater", JOptionPane.INFORMATION_MESSAGE );
 	}
 }
