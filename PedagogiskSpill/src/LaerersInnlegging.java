@@ -125,7 +125,7 @@ public class LaerersInnlegging {
 			System.out.println(denneEleven.getFornavn());
 			System.out.println(denneEleven.getEtternavn());
 			System.out.println(denneEleven.getnivaaElev());
-			output.format("%s %s %d\n", denneEleven.getFornavn(), denneEleven.getEtternavn(), denneEleven.getnivaaElev());
+			output.format("%s %s %d \r\n", denneEleven.getFornavn(), denneEleven.getEtternavn(), denneEleven.getnivaaElev());
 
 
 
