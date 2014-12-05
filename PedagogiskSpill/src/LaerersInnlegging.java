@@ -23,7 +23,7 @@ public class LaerersInnlegging {
 		// kjøre hent inn ord
 		//lag elevliste
 		this.hoved=vindu;
-	        String [] verdier = {"elev", "flere ord", "se resultater"};
+	        String [] verdier = {"Legg til elev", "Legg til flere ord", "Se elvenes resultater"};
 	        String valgt;
 	        valgt=(String)JOptionPane.showInputDialog(null, "Legg til", "Hva vil du gjøre", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
 	
