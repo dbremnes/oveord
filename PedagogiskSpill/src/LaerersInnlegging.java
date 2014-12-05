@@ -210,7 +210,7 @@ public class LaerersInnlegging {
 			System.out.println(detteInnlegget.getNorskOrd());
 			System.out.println(detteInnlegget.getEngelskOrd());
 			System.out.println(detteInnlegget.getNivaa());
-			output.format("%s %s %d\n", detteInnlegget.getNorskOrd(), detteInnlegget.getEngelskOrd(), detteInnlegget.getNivaa());
+			output.format("%s %s %d\n ", detteInnlegget.getNorskOrd(), detteInnlegget.getEngelskOrd(), detteInnlegget.getNivaa());
 		}
 		//Lukker filen
 		if ( output != null){
