@@ -37,7 +37,8 @@ public class Spilleren {
    }
 
    public String toString(){
-	   String streng = this.navn+" - Nivå:"+this.nivaa;
+   	// Blir brukt til listing av elever i nedtrekksliste showInputDialog()  i hovedklassen.
+	   String streng = this.navn;
 	   return streng;
    }
    
