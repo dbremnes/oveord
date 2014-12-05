@@ -219,9 +219,9 @@ public class Oppgavesamling {
 				String filnavnet= "Resultat_"+Integer.toString(this.spiller.getNivaa())+"_"+this.spiller.getFornavn()+"_"+this.spiller.getEtternavn()+".txt";
 				// Lag klar string til fila, altså innhaldet.
 				//Bygger opp stringen
-				String filInnholdet = "Antall riktige svar: "+antallRiktigeSvar+" \n";
-				filInnholdet += "Riktig besvart oppgaver er: "+riktigBesvart+" \n";
-				filInnholdet += " Feil besvarte oppgaver er:"+feilBesvart+" \n";
+			String filInnholdet = "Antall riktige svar: "+antallRiktigeSvar+"+\r\n";
+				filInnholdet += "Riktig besvart oppgaver er: "+riktigBesvart+"+\r\n";
+				filInnholdet += "Feil besvarte oppgaver er:"+feilBesvart+"+\r\n";
 			
 				lagFil(filnavnet,filInnholdet);
 
