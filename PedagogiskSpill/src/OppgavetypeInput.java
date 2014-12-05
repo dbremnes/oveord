@@ -234,8 +234,9 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 	private void sjekkSvar() {
 		String forslag = (String) this.inputSvar.getText();
 		this.forsokBrukt++;
-		
-		if(forslag.equals(this.oppgaveFasit)){  // String-samanlikning, må bruke equals() fra String-klassa, istaden for ==
+		  // String-samanlikning, må bruke equals() fra String-klassa, istaden for ==
+		if(forslag.toLowerCase().equals(this.oppgaveFasit.toLowerCase())){
+
 //			JOptionPane.showMessageDialog(this,"Hurra! You rule");  // Svært pedagogisk riktig tilbakemelding./ ToF: Det er kanskje pedagogisk riktig, men også litt slitsom? ;-)
 			this.riktigBesvart = true;
 			//Dag forsøker å samle opp svar og riktige verdier
