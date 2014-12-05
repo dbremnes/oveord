@@ -1,4 +1,4 @@
-//Oppgavesamling
+//Oppgavesamling-laget av Dag Bremnes
 /* Oppgavesamling er et objekt med følgende funksjoner:
 Den oppretter en array med objekter basert på oppgavetypeInput og innlesing fra fil
 Den kontrollerer aktiv spiller med informasjon og hvilken oppgave som skal vises
