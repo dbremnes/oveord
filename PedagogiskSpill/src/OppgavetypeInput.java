@@ -98,7 +98,6 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 		/* I staden for å legge alt med grensesnitt her, slik Windowbuilder gjer det, vil eg ha ein rein konstruktør.
 		 * Har ikkje fått lest meg heilt opp på MVC enno, men dette er vel eit lite steg i den retning, å få View-element bort frå program-logikken.
 		 */
-		lagGrensesnittet();
 		this.antalTilgjengeligeForsok = 2; // Dette kan jo vere en parameter til konstruktøren, da må lærar velge antal forsøk i sin input( ?)
 		this.forsokBrukt = 0;
 
@@ -257,6 +256,8 @@ public class OppgavetypeInput extends JFrame implements ActionListener {
 	}
 
 	public JPanel visOppgave(){
+		// Vi lager grensesnittet først her, for at det skal ha oppdatert innhold i sine variabler. 
+		lagGrensesnittet();
 		// Sender rett og slett contentPane'et, altså grensesnittet. Skal brukast av Oppgavesamling.
 		return this.contentPane;
 	}
