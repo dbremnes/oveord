@@ -23,20 +23,23 @@ public class LaerersInnlegging {
 		// kjøre hent inn ord
 		//lag elevliste
 		this.hoved=vindu;
-        String [] verdier = {"elev", "flere ord", "se resultater"};
-        String valgt;
-        valgt=(String)JOptionPane.showInputDialog(null, "Legg til", "Hva vil du gjøre", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
-
-        if (valgt.equals("elev")){
-        	lagElevliste();
-        }else if (valgt.equals("flere ord")){
-        	ArrayList<Innlegg> midlertidigListe = hentInnOrd();
-        }
-        else{
+	        String [] verdier = {"elev", "flere ord", "se resultater"};
+	        String valgt;
+	        valgt=(String)JOptionPane.showInputDialog(null, "Legg til", "Hva vil du gjøre", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
+	
+	        if (valgt.equals("elev")){
+	        	lagElevliste();
+	        	// Her bør vi legge til en sjekk på om det finnes ord som lærer har lagt til. Det blir i versjon 2.  
+			JOptionPane.showMessageDialog(null,  "Takk, \n"+"Har du husket å legge inn ord?" + " Da kan du la elevene gjennomføre prøven","Takk!", JOptionPane.PLAIN_MESSAGE );
+	        }else if (valgt.equals("flere ord")){
+	        	ArrayList<Innlegg> midlertidigListe = hentInnOrd();
+	        	// Her bør vi legge til en sjekk på om det finnes elever.  Det blir i versjon 2. 
+	  		JOptionPane.showMessageDialog(null,  "Takk, \n"+"Har du husket å legge til elever?" + " Da kan du la elevene gjennomføre prøven","Takk!", JOptionPane.PLAIN_MESSAGE );
+	        }
+	        else{
 			this.hoved.velgSpiller();
 			this.seResultater();
-			}
-		JOptionPane.showMessageDialog(null,  "Takk, \n"+"Har du husket å legge inn ord?" + " Da kan du la elevene gjennomføre prøven","Takk!", JOptionPane.PLAIN_MESSAGE );
+		}
 	}
 	//Oppretter metode hvor det skal hentes inn Fornavn, Etternavn og Nivå på eleven
 	public static void lagElevliste()
