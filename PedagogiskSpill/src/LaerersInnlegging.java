@@ -27,11 +27,11 @@ public class LaerersInnlegging {
 	        String valgt;
 	        valgt=(String)JOptionPane.showInputDialog(null, "Legg til", "Hva vil du gjøre", JOptionPane.INFORMATION_MESSAGE, null, verdier, verdier[0] );
 	
-	        if (valgt.equals("elev")){
+	        if (valgt.equals("Legg til elev")){
 	        	lagElevliste();
 	        	// Her bør vi legge til en sjekk på om det finnes ord som lærer har lagt til. Det blir i versjon 2.  
 			JOptionPane.showMessageDialog(null,  "Takk, \n"+"Har du husket å legge inn ord?" + " Da kan du la elevene gjennomføre prøven","Takk!", JOptionPane.PLAIN_MESSAGE );
-	        }else if (valgt.equals("flere ord")){
+	        }else if (valgt.equals("Legg til flere ord")){
 	        	ArrayList<Innlegg> midlertidigListe = hentInnOrd();
 	        	// Her bør vi legge til en sjekk på om det finnes elever.  Det blir i versjon 2. 
 	  		JOptionPane.showMessageDialog(null,  "Takk, \n"+"Har du husket å legge til elever?" + " Da kan du la elevene gjennomføre prøven","Takk!", JOptionPane.PLAIN_MESSAGE );
