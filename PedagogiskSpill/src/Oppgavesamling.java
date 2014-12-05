@@ -216,7 +216,7 @@ public class Oppgavesamling {
 			/*
 			 * Skriv resultatet til fil, på mønsteret Resultat_Nivaa_Elevens_Navn.txt
 			 */
-			String filnavnet= "Resultat_"+"_"+this.spiller.getFornavn()+"_"+this.spiller.getEtternavn()+".txt";
+			String filnavnet= "Resultat_"+this.spiller.getFornavn()+"_"+this.spiller.getEtternavn()+".txt";
 				// Lag klar string til fila, altså innhaldet.
 				//Bygger opp stringen
 			String filInnholdet = "Antall riktige svar: "+antallRiktigeSvar+"+\r\n";
