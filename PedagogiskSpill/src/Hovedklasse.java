@@ -14,12 +14,12 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
 import java.util.*;
 /**********************PROGRAMSTART**************************
- * NB! Når du kjører programmet første gang er det viktig 
- * å følge en spesiell rekkefølge
- * Start som lærer. Legg inn elever. Legg inn ord.
- * Først da kjører programmet uten problem for eleven
+ * NB! Du må starte programmet fra denne klassen
+ * Første gang er det viktig å følge en spesiell rekkefølge:
+ * Start som lærer. Legg inn elever. 
+ * Legg inn ord.
+ * Først da kjører programmet uten problem for eleven.
  */
-
 
 public class Hovedklasse extends JFrame {
 	private Scanner elevFil;
