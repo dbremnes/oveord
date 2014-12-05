@@ -222,14 +222,7 @@ public class Oppgavesamling {
 				String filInnholdet = "Antall riktige svar: "+antallRiktigeSvar+" \n";
 				filInnholdet += "Riktig besvart oppgaver er: "+riktigBesvart+" \n";
 				filInnholdet += " Feil besvarte oppgaver er:"+feilBesvart+" \n";
-			 * Skriv resultatet til fil, på mønsteret Resultat_Nivaa_Elevens_Navn.txt
-			 */
-				String filnavnet= "Resultat_"+Integer.toString(this.spiller.getNivaa())+"_"+this.spiller.getFornavn()+"_"+this.spiller.getEtternavn()+".txt";
-				// Lag klar string til fila, altså innhaldet.
-				//Bygger opp stringen
-				String filInnholdet = "Antall riktige svar: "+antallRiktigeSvar+"\n";
-				filInnholdet += "Riktig besvart oppgaver er: "+riktigBesvart+"\n";
-				filInnholdet += "Feil besvarte oppgaver er:"+feilBesvart+"\n";
+			
 				lagFil(filnavnet,filInnholdet);
 
 
