@@ -228,7 +228,7 @@ public class LaerersInnlegging {
   	String filnavn;
 
 	//prøver lesning av fil
-	filnavn="Resultat_"+this.hoved.spiller.getFornavn()+"_"+this.hoved.spiller.getEtternavn()+".txt";
+	filnavn="Resultat"+"_"+this.hoved.spiller.getFornavn()+"_"+this.hoved.spiller.getEtternavn()+".txt";
 			try {
 				//oppretter fil scanneren, basert på innsendt filnavn
 		        this.fil=new Scanner(new File(filnavn));
