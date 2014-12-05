@@ -46,7 +46,10 @@ public class Hovedklasse extends JFrame {
             vindu.setVisible(true);
         } else {
         	// Kommentere, deklamere, reparere, programmere!
-        	LaerersInnlegging laerer=new LaerersInnlegging();
+        	Hovedklasse vindu = new Hovedklasse();
+			vindu.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+            vindu.setSize(670, 750);
+        	LaerersInnlegging laerer=new LaerersInnlegging(vindu);
         }
     } // end main
 
